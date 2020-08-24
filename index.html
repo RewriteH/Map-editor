@@ -5,15 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="styles/App.css">
+  <link rel="stylesheet" href="styles/App.min.css">
 </head>
 
 <body>
   <div class="root">
     <div class="game-area">
-      <canvas class="game-area__ctx" width="400px" height="600px"></canvas>
+      <canvas class="game-area__ctx" width="150px" height="170px"></canvas>
     </div>
     <div class="game-panel">
+      <div class="game-panel__settings">
+        <label for="grid">Enable grid</label>
+        <input name="grid" type="checkbox" onClick={toggleGrid(this)}>
+      </div>
+      <div class="game-panel__tabs">
         <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
         <label for="tab-btn-1" class="game-panel__label">Walls</label>
         <input type="radio" name="tab-btn" id="tab-btn-2" value="">
@@ -21,16 +26,18 @@
         <input type="radio" name="tab-btn" id="tab-btn-3" value="">
         <label for="tab-btn-3" class="game-panel__label">Areas</label>
 
-      <section class="game-panel__walls">
-      </section>
-      <section class="game-panel__wind">
-        Содержимое 2...
-      </section>
-      <section class="game-panel__areas">
-        Содержимое 3...
-      </section>
+        <section class="game-panel__walls">
+        </section>
+        <section class="game-panel__wind">
+          Содержимое 2...
+        </section>
+        <section class="game-panel__areas">
+          Содержимое 3...
+        </section>
+      </div>
     </div>
   </div>
 </body>
 <script src="scripts/main.js"></script>
+
 </html>

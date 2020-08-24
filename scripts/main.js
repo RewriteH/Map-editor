@@ -15,8 +15,8 @@ const getYcoords = e => currArea.y + e.y
 /*END OF HELP FUNCTIONS */
 
 const currArea = {
-    x: 50,
-    y: 50,
+    x: 0,
+    y: 0,
     width: 150,
     height: 170,
 }
@@ -81,16 +81,20 @@ const updatePanel = wall => {
     }
 }
 
-const grid = () => {
-    ctx.beginPath()
-    const w = canvas.width - 1;
-    const h = canvas.height - 1;
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 1
-    for (var x = -0.5; x < w; x += 10) ctx.strokeRect(x, 0, 0.1, h);
-    for (var y = -0.5; y < h; y += 10) ctx.strokeRect(0, y, w, 0.1);
-    ctx.fill()
-    ctx.closePath()
+const toggleGrid = (e) => {
+    if (e.checked) {
+        ctx.beginPath()
+        const w = canvas.width - 1;
+        const h = canvas.height - 1;
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 0.1
+        for (var x = -0.5; x < w; x += 30) ctx.strokeRect(x, 0, 0.1, h);
+        for (var y = -0.5; y < h; y += 30) ctx.strokeRect(0, y, w, 0.1);
+        ctx.fill()
+        ctx.closePath()
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
 }
 
 const updateArea = wall => {
@@ -116,7 +120,7 @@ const loadWalls = () => {
     )
 }
 
-updateArea({ x: 0, y: 0, w: 15, h: 50, id: 1, burn: [], permeability: []})
+updateArea({ x: 0, y: 0, w: 15, h: 50, id: 1, burn: [], permeability: [] })
 
 updateArea({ x: 50, y: 50, w: 15, h: 50, id: 2 })
 
@@ -178,22 +182,22 @@ const dragWallOnKey = e => {
             case 'KeyS':
             case 'ArrowDown':
                 if (currArea.height > wall.y) {
-                    wall.y +=1
+                    wall.y += 1
                 }
                 break
             case 'KeyW':
             case 'ArrowUp':
                 if (0 < wall.y) {
-                    wall.y -=1
+                    wall.y -= 1
                 }
                 break
-            case 'KeyQ': 
+            case 'KeyQ':
                 if (wall[wallLength] > 10) {
-                    wall[wallLength] -=1
+                    wall[wallLength] -= 1
                 }
                 break
-            case 'KeyE': 
-                wall[wallLength] +=1
+            case 'KeyE':
+                wall[wallLength] += 1
         }
     }
     updatePanel(wall)
