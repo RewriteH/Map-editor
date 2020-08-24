@@ -11,16 +11,14 @@ const getSelectedWall = () => walls.find(e => e.active === true)
 const getDraggableWall = () => walls.find(e => e.draggable === true)
 const getXcoords = e => currArea.x + e.x
 const getYcoords = e => currArea.y + e.y
-const getAreaXMaxCoords = () => currArea.x + currArea.width
-const getAreaYMaxCoords = () => currArea.y + currArea.height
 
 /*END OF HELP FUNCTIONS */
 
 const currArea = {
     x: 50,
     y: 50,
-    width: 100,
-    height: 120,
+    width: 150,
+    height: 170,
 }
 
 const setSelectedPanelItem = e => {
@@ -83,7 +81,20 @@ const updatePanel = wall => {
     }
 }
 
+const grid = () => {
+    ctx.beginPath()
+    const w = canvas.width - 1;
+    const h = canvas.height - 1;
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1
+    for (var x = -0.5; x < w; x += 10) ctx.strokeRect(x, 0, 0.1, h);
+    for (var y = -0.5; y < h; y += 10) ctx.strokeRect(0, y, w, 0.1);
+    ctx.fill()
+    ctx.closePath()
+}
+
 const updateArea = wall => {
+    grid()
     ctx.beginPath()
     addWall(wall)
     ctx.rect(getXcoords(wall), getYcoords(wall), wall.w, wall.h);
@@ -113,7 +124,8 @@ updateArea({ x: 50, y: 50, w: 15, h: 50, id: 2 })
 const takeDraggableWall = e => {
     walls.forEach(wall => {
         // (Клик > координат начала wall && клик < координат конца wall
-        if (e.layerX > getXcoords(wall) && e.layerX < getXcoords(wall) + wall.w) {
+        if (e.layerX > getXcoords(wall) && e.layerX < getXcoords(wall) + wall.w &&
+            e.layerY > getYcoords(wall) && e.layerY < getYcoords(wall) + wall.h) {
             wall.active = true
             setSelectedPanelItem(document.querySelector(`#wall-${wall.id}`))
             wall.draggable = true
@@ -126,19 +138,19 @@ const takeDraggableWall = e => {
 const dragWall = e => {
     const wall = getDraggableWall()
     if (wall) {
-        let newX = e.layerX - currArea.x - (wall.w / 2)
-        let newY = e.layerY - currArea.y - (wall.h / 2)
+        let newX = Math.round(e.layerX - currArea.x - (wall.w / 2))
+        let newY = Math.round(e.layerY - currArea.y - (wall.h / 2))
         if (newX < 0) {
             newX = 0
         }
-        if (newX >= currArea.x + currArea.width) {
-            newX = currArea.x + currArea.width
+        if (newX >= currArea.width) {
+            newX = currArea.width
         }
         if (newY < 0) {
             newY = 0
         }
-        if (newY >= currArea.y + currArea.height) {
-            newY = currArea.y + currArea.height
+        if (newY >= currArea.height) {
+            newY = currArea.height
         }
         wall.x = newX
         wall.y = newY
@@ -148,36 +160,35 @@ const dragWall = e => {
 
 const dragWallOnKey = e => {
     let wall = getSelectedWall()
-    console.log(currArea.x, wall.x)
     let wallLength = wall.w > wall.h ? 'w' : 'h'
     if (wall) {
         switch (e.code) {
             case 'KeyD':
             case 'ArrowRight':
-                if (getAreaXMaxCoords() >= wall.x) {
+                if (currArea.width > wall.x) {
                     wall.x += 1
                 }
                 break
             case 'KeyA':
             case 'ArrowLeft':
-                if (0 <= wall.x) {
+                if (0 < wall.x) {
                     wall.x -= 1
                 }
                 break
             case 'KeyS':
             case 'ArrowDown':
-                if (getAreaYMaxCoords() >= wall.y) {
+                if (currArea.height > wall.y) {
                     wall.y +=1
                 }
                 break
             case 'KeyW':
             case 'ArrowUp':
-                if (0 <= wall.y) {
+                if (0 < wall.y) {
                     wall.y -=1
                 }
                 break
             case 'KeyQ': 
-                if (wall[wallLength] >= 10) {
+                if (wall[wallLength] > 10) {
                     wall[wallLength] -=1
                 }
                 break
