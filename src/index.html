@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles/App.css">
+</head>
+
+<body>
+  <div class="root">
+    <div class="game-area">
+      <canvas class="game-area__ctx" height="500" width="600"></canvas>
+    </div>
+    <div class="game-panel">
+        <input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+        <label for="tab-btn-1" class="game-panel__label">Walls</label>
+        <input type="radio" name="tab-btn" id="tab-btn-2" value="">
+        <label for="tab-btn-2" class="game-panel__label">Wind</label>
+        <input type="radio" name="tab-btn" id="tab-btn-3" value="">
+        <label for="tab-btn-3" class="game-panel__label">Areas</label>
+
+      <section class="game-panel__walls">
+      </section>
+      <section class="game-panel__wind">
+        Содержимое 2...
+      </section>
+      <section class="game-panel__areas">
+        Содержимое 3...
+      </section>
+    </div>
+  </div>
+</body>
+<script src="scripts/main.js"></script>
+</html>
