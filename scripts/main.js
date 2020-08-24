@@ -71,6 +71,7 @@ const setSelectedWall = e => {
 }
 
 const wallChange = e => {
+    console.log(e)
     const r = walls.find(wall => wall.active === true)
     r[e.name] = +e.value
     loadWalls()
@@ -105,6 +106,7 @@ const updatePanel = wall => {
     const panelWall = document.querySelector(`#wall-${wall.id}`)
     for (let prop in wall) {
         if (panelWall.querySelector(`input[name=${prop}]`)) {
+            console.log(1)
             panelWall.querySelector(`input[name=${prop}]`).innerHTML = wall[prop]
         }
     }
