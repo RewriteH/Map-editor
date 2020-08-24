@@ -2,76 +2,48 @@ var canvas = document.querySelector('.game-area__ctx')
 var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel__walls')
 var draggableWall = null
+let selectedPanelItem = null
 
+let walls = []
+
+/*HELP FUNCTIONS */
 const getSelectedWall = () => walls.find(e => e.active === true)
 const getDraggableWall = () => walls.find(e => e.draggable === true)
+const getXcoords = e => currArea.x + e.x
+const getYcoords = e => currArea.y + e.y
+const getAreaXMaxCoords = () => currArea.x + currArea.width
+const getAreaYMaxCoords = () => currArea.y + currArea.height
+
+/*END OF HELP FUNCTIONS */
 
 const currArea = {
     x: 50,
     y: 50,
-    width: 150,
-    height: 150,
-    x1: this.x + this.width,
-    x2: this.y + this.height
+    width: 100,
+    height: 120,
 }
 
-let walls = []
-
-const getXcoords = e => currArea.x + e.x
-const getYcoords = e => currArea.y + e.y
-
-canvas.onmousedown = e => {
-    walls.forEach(wall => {
-        // (Клик > координат начала wall && клик < координат конца wall
-        if (e.layerX > getXcoords(wall) && e.layerX < getXcoords(wall) + wall.w) {
-            wall.active = true
-            wall.draggable = true
-        } else { wall.active = false }
+const setSelectedPanelItem = e => {
+    if (selectedPanelItem) {
+        selectedPanelItem.classList.remove('active')
     }
-    )
-    loadWalls()
-}
-
-canvas.onmousemove = e => {
-    const wall = getDraggableWall()
-    if (wall) {
-        let newX = e.layerX - currArea.x - (wall.w / 2)
-        let newY = e.layerY - currArea.y - (wall.h / 2)
-        if (newX < 0) {
-            newX = 0
-        }
-        if (newX >= currArea.x + currArea.width) {
-            newX = currArea.x + currArea.width
-        }
-        if (newY < 0) {
-            newY = 0
-        }
-        if (newY >= currArea.y + currArea.height) {
-            newY = currArea.y + currArea.height
-        }
-        wall.x = newX
-        wall.y = newY
-        loadWalls()
-    }
-}
-
-document.onmouseup = e => {
-    const wall = getDraggableWall()
-    if (wall) wall.draggable = null
+    selectedPanelItem = e
+    selectedPanelItem.classList.add('active')
 }
 
 const setSelectedWall = e => {
+    setSelectedPanelItem(e)
     walls.forEach(wall => {
-        if (+e.id === wall.id) {
+        if (e.id === `wall-${wall.id}`) {
             wall.active = true
         } else { wall.active = false }
     }
     )
+
     loadWalls()
 }
 
 const wallChange = e => {
-    console.log(e)
     const r = walls.find(wall => wall.active === true)
     r[e.name] = +e.value
     loadWalls()
@@ -106,8 +78,7 @@ const updatePanel = wall => {
     const panelWall = document.querySelector(`#wall-${wall.id}`)
     for (let prop in wall) {
         if (panelWall.querySelector(`input[name=${prop}]`)) {
-            console.log(1)
-            panelWall.querySelector(`input[name=${prop}]`).innerHTML = wall[prop]
+            panelWall.querySelector(`input[name=${prop}]`).value = wall[prop]
         }
     }
 }
@@ -127,38 +98,107 @@ const updateArea = wall => {
 
 const loadWalls = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    walls.map(e => updateArea(e))
+    walls.map(e => {
+        updateArea(e)
+        updatePanel(e)
+    }
+    )
 }
 
-updateArea({ x: 0, y: 0, w: 15, h: 50, id: 1 })
+updateArea({ x: 0, y: 0, w: 15, h: 50, id: 1, burn: [], permeability: []})
 
 updateArea({ x: 50, y: 50, w: 15, h: 50, id: 2 })
 
+/* LISTENERS */
+const takeDraggableWall = e => {
+    walls.forEach(wall => {
+        // (Клик > координат начала wall && клик < координат конца wall
+        if (e.layerX > getXcoords(wall) && e.layerX < getXcoords(wall) + wall.w) {
+            wall.active = true
+            setSelectedPanelItem(document.querySelector(`#wall-${wall.id}`))
+            wall.draggable = true
+        } else { wall.active = false }
+    }
+    )
+    loadWalls()
+}
 
-const moveWallKey = e => {
+const dragWall = e => {
+    const wall = getDraggableWall()
+    if (wall) {
+        let newX = e.layerX - currArea.x - (wall.w / 2)
+        let newY = e.layerY - currArea.y - (wall.h / 2)
+        if (newX < 0) {
+            newX = 0
+        }
+        if (newX >= currArea.x + currArea.width) {
+            newX = currArea.x + currArea.width
+        }
+        if (newY < 0) {
+            newY = 0
+        }
+        if (newY >= currArea.y + currArea.height) {
+            newY = currArea.y + currArea.height
+        }
+        wall.x = newX
+        wall.y = newY
+        loadWalls()
+    }
+}
+
+const dragWallOnKey = e => {
     let wall = getSelectedWall()
+    console.log(currArea.x, wall.x)
+    let wallLength = wall.w > wall.h ? 'w' : 'h'
     if (wall) {
         switch (e.code) {
             case 'KeyD':
             case 'ArrowRight':
-                wall.x += 1
+                if (getAreaXMaxCoords() >= wall.x) {
+                    wall.x += 1
+                }
                 break
             case 'KeyA':
             case 'ArrowLeft':
-                wall.x -= 1
+                if (0 <= wall.x) {
+                    wall.x -= 1
+                }
                 break
             case 'KeyS':
             case 'ArrowDown':
-                wall.y += 1
+                if (getAreaYMaxCoords() >= wall.y) {
+                    wall.y +=1
+                }
                 break
             case 'KeyW':
             case 'ArrowUp':
-                wall.y -= 1
+                if (0 <= wall.y) {
+                    wall.y -=1
+                }
                 break
+            case 'KeyQ': 
+                if (wall[wallLength] >= 10) {
+                    wall[wallLength] -=1
+                }
+                break
+            case 'KeyE': 
+                wall[wallLength] +=1
         }
     }
     updatePanel(wall)
     loadWalls()
 }
 
-document.addEventListener('keydown', moveWallKey)
+const dropDraggableWall = e => {
+    const wall = getDraggableWall()
+    if (wall) wall.draggable = null
+}
+
+canvas.addEventListener('mousedown', takeDraggableWall)
+
+canvas.addEventListener('mousemove', dragWall)
+
+document.addEventListener('keydown', dragWallOnKey)
+
+document.addEventListener('mouseup', dropDraggableWall)
+/* END OF LISTENERS */
