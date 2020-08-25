@@ -8,8 +8,8 @@ var selectedPanelItem = null
 var walls = []
 
 const gridSettings = {
-    squareWidth: 25,
-    squareHeight: 15,
+    squareWidth: 10,
+    squareHeight: 12,
 }
 
 /*HELP FUNCTIONS */
@@ -25,8 +25,8 @@ const getYPixelRatio = canvas.height / gridSettings.squareHeight
 const currArea = {
     x: 0,
     y: 0,
-    width: 250,
-    height: 270,
+    width: 500,
+    height: 600,
 }
 
 const setSelectedPanelItem = e => {
@@ -156,6 +156,7 @@ const takeDraggableWall = e => {
 
 
 const squaresToCoords = (coords, axis) => {
+    console.log(coords)
     if (axis === 'X') {
         let square = Math.round(coords / getXPixelRatio)
         square = Math.round(square * getXPixelRatio)
@@ -168,7 +169,6 @@ const squaresToCoords = (coords, axis) => {
     }
 
 }
-
 
 const dragWall = e => {
     const wall = getDraggableWall()
@@ -199,33 +199,40 @@ const dragWall = e => {
     }
 }
 
+
+
 const dragWallOnKey = e => {
     let wall = getSelectedWall()
     let wallLength = wall.w > wall.h ? 'w' : 'h'
     if (wall) {
+
         switch (e.code) {
             case 'KeyD':
             case 'ArrowRight':
-                if (currArea.width - wall.w > wall.x) {
-                    wall.x += 1
+                if (wall.x + getXPixelRatio >= currArea.width - wall.w) {
+                    wall.x = currArea.width - wall.w
+                } else {
+                    wall.x += getXPixelRatio
                 }
                 break
             case 'KeyA':
             case 'ArrowLeft':
-                if (0 < wall.x) {
-                    wall.x -= 1
+                if (0 <= wall.x - getXPixelRatio) {
+                    wall.x -= getXPixelRatio
                 }
                 break
             case 'KeyS':
             case 'ArrowDown':
-                if (currArea.height - wall.h > wall.y) {
-                    wall.y += 1
+                if (wall.y + getYPixelRatio >= currArea.height - wall.y) {
+                    wall.y = currArea.height - wall.h
+                } else {
+                    wall.y += getYPixelRatio
                 }
                 break
             case 'KeyW':
             case 'ArrowUp':
-                if (0 < wall.y) {
-                    wall.y -= 1
+                if (0 <= wall.y - getYPixelRatio) {
+                    wall.y -= getYPixelRatio
                 }
                 break
             case 'KeyQ':
