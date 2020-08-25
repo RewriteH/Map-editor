@@ -7,20 +7,20 @@ var selectedPanelItem = null
 
 var walls = []
 
+const gridSettings = {
+    squareWidth: 25,
+    squareHeight: 15,
+}
+
 /*HELP FUNCTIONS */
 const getSelectedWall = () => walls.find(e => e.active === true)
 const getDraggableWall = () => walls.find(e => e.draggable === true)
 const getXcoords = e => currArea.x + e.x
 const getYcoords = e => currArea.y + e.y
-const getXPixelRatio = e => canvas.width / gridSettings.squareWidth 
-const getYPixelRatio = e => canvas.height / gridSettings.squareHeight
+const getXPixelRatio = canvas.width / gridSettings.squareWidth
+const getYPixelRatio = canvas.height / gridSettings.squareHeight
 /*END OF HELP FUNCTIONS */
 
-
-const gridSettings = {
-    squareWidth: 12,
-    squareHeight: 12,
-}
 
 const currArea = {
     x: 0,
@@ -98,9 +98,9 @@ const toggleGrid = e => { // Сетка
     if (gridCheckbox.checked) {
         ctx.beginPath()
         const w = canvas.width - 2
-        const h = canvas.height - 2 
-        const squareWidth = w / gridSettings.squareWidth + 1
-        const squareHeight = h / gridSettings.squareHeight + 1
+        const h = canvas.height - 2
+        const squareWidth = w / gridSettings.squareWidth
+        const squareHeight = h / gridSettings.squareHeight
         ctx.strokeStyle = '#bdbdbd'
         ctx.lineWidth = 0.1
         for (var x = squareWidth; x < w; x += squareWidth) ctx.strokeRect(x, 0, 0.1, h)
@@ -154,13 +154,22 @@ const takeDraggableWall = e => {
     loadWalls()
 }
 
-const coordsToSquares = (coords, wall) => {
-    console.log
-    coords = coords / getXPixelRatio()
 
-    console.log(coords)
+const squaresToCoords = (coords, axis) => {
+    if (axis === 'X') {
+        let square = Math.round(coords / getXPixelRatio)
+        square = Math.round(square * getXPixelRatio)
+        return (square)
+    } 
+    if (axis === 'Y') {
+        let square = Math.round(coords / getYPixelRatio)
+        square = Math.round(square * getYPixelRatio)
+        return (square)
+    }
+
 }
- 
+
+
 const dragWall = e => {
     const wall = getDraggableWall()
     if (wall) {
@@ -170,6 +179,8 @@ const dragWall = e => {
         let newY = Math.round(
             e.layerY - currArea.y - (wall.h / 2)
         )
+        newX = squaresToCoords(newX, 'X')
+        newY = squaresToCoords(newY, 'Y')
         if (newX < 0) {
             newX = 0
         }
@@ -182,7 +193,6 @@ const dragWall = e => {
         if (newY >= currArea.height - wall.h) {
             newY = currArea.height - wall.h
         }
-        coordsToSquares(newX, wall)
         wall.x = newX
         wall.y = newY
         loadWalls()
