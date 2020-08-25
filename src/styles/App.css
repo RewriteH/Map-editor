@@ -6,19 +6,23 @@
 .root {
   padding: 15px; }
 
-.game-area canvas {
+.game-area__ctx {
   border: 1px solid #000; }
 
 .game-panel {
+  border: 1px solid #000;
   max-width: 700px;
   margin-top: 50px;
-  width: 100%; }
-  .game-panel input[type="radio"] {
+  width: 100%;
+  padding: 10px; }
+  .game-panel__settings {
+    margin-bottom: 15px; }
+  .game-panel__tabs input[type="radio"] {
     display: none; }
-  .game-panel input[type="radio"]:checked + label {
+  .game-panel__tabs input[type="radio"]:checked + label {
     background-color: #fff;
     border-bottom: 1px solid #fff; }
-  .game-panel__label {
+  .game-panel__tabs label {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
@@ -32,7 +36,7 @@
     cursor: pointer;
     position: relative;
     top: 1px; }
-  .game-panel section {
+  .game-panel__tabs section {
     display: none;
     border: 1px solid #e0e0e0;
     padding: 10px 15px;
@@ -40,7 +44,12 @@
 
 .game-panel-wall {
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  margin: 10px 5px;
+  padding: 5px;
+  border: 2px solid; }
+  .game-panel-wall.active {
+    border-color: red; }
   .game-panel-wall input {
     width: 100%;
     max-width: 50px; }

@@ -9,7 +9,7 @@ const gulp = require('gulp'),
 gulp.task('sass', function() {
     return gulp.src('src/styles/*.sass')
         .pipe(sass({outputStyle: ''}))
-        .pipe(gulp.dest('src'))
+        .pipe(gulp.dest('src/styles'))
         .pipe(browserSync.reload({stream: true}))
 });
 
@@ -31,7 +31,7 @@ gulp.task('build', async function() {
     let buildCss = await gulp.src('src/styles/App.sass')
         .pipe(sass({outputStyle: ''}))
         .pipe(cssmin())
-        .pipe(rename({suffix: '.min'}))
+        // .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('build/styles'));
     let buildJs = gulp.src('src/scripts/*.js')
         .pipe(minifyjs())
@@ -39,7 +39,7 @@ gulp.task('build', async function() {
 });
 
 gulp.task('deploy', function() {
-    return gulp.src("./dist/**/*")
+    return gulp.src("build/**/*")
     .pipe(deploy())
 })
 
@@ -58,6 +58,6 @@ gulp.task('watch', function(){
     gulp.watch('src/scripts/*.js', gulp.parallel('script'))
 })
 
-gulp.task('default', gulp.parallel('sass', 'script', 'browser-sync', 'watch'));
+gulp.task('default', gulp.parallel('browser-sync', 'watch'));
 
 
