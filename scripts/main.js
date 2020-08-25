@@ -1,27 +1,40 @@
 var canvas = document.querySelector('.game-area__ctx')
 var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel__walls')
+var gridCheckbox = document.querySelector('input[name=grid]')
 var draggableWall = null
-let selectedPanelItem = null
+var selectedPanelItem = null
 
-let walls = []
+var walls = []
 
 /*HELP FUNCTIONS */
 const getSelectedWall = () => walls.find(e => e.active === true)
 const getDraggableWall = () => walls.find(e => e.draggable === true)
 const getXcoords = e => currArea.x + e.x
 const getYcoords = e => currArea.y + e.y
-
+const getXPixelRatio = e => canvas.width / gridSettings.squareWidth 
+const getYPixelRatio = e => canvas.height / gridSettings.squareHeight
 /*END OF HELP FUNCTIONS */
+
+
+const gridSettings = {
+    squareWidth: 12,
+    squareHeight: 12,
+}
 
 const currArea = {
     x: 0,
     y: 0,
-    width: 150,
-    height: 170,
+    width: 250,
+    height: 270,
 }
 
 const setSelectedPanelItem = e => {
+    if (e === null) {
+        selectedPanelItem.classList.remove('active')
+        selectedPanelItem = null
+        return
+    }
     if (selectedPanelItem) {
         selectedPanelItem.classList.remove('active')
     }
@@ -37,13 +50,12 @@ const setSelectedWall = e => {
         } else { wall.active = false }
     }
     )
-
     loadWalls()
 }
 
 const wallChange = e => {
-    const r = walls.find(wall => wall.active === true)
-    r[e.name] = +e.value
+    const wall = walls.find(wall => wall.active === true)
+    wall[e.name] = +e.value
     loadWalls()
 }
 
@@ -53,7 +65,7 @@ const addWall = wall => {
     panelWalls.insertAdjacentHTML('beforeend',
         `<div 
         class="game-panel__wall game-panel-wall"
-        id="wall-${wall.id}"r
+        id="wall-${wall.id}"
         onclick="setSelectedWall(this)"
     >
         <div class="game-panel-wall__coords">
@@ -81,24 +93,25 @@ const updatePanel = wall => {
     }
 }
 
-const toggleGrid = (e) => {
-    if (e.checked) {
+/*REDRAW AREA*/
+const toggleGrid = e => { // Сетка
+    if (gridCheckbox.checked) {
         ctx.beginPath()
-        const w = canvas.width - 1;
-        const h = canvas.height - 1;
-        ctx.strokeStyle = 'black';
+        const w = canvas.width - 2
+        const h = canvas.height - 2 
+        const squareWidth = w / gridSettings.squareWidth + 1
+        const squareHeight = h / gridSettings.squareHeight + 1
+        ctx.strokeStyle = '#bdbdbd'
         ctx.lineWidth = 0.1
-        for (var x = -0.5; x < w; x += 30) ctx.strokeRect(x, 0, 0.1, h);
-        for (var y = -0.5; y < h; y += 30) ctx.strokeRect(0, y, w, 0.1);
+        for (var x = squareWidth; x < w; x += squareWidth) ctx.strokeRect(x, 0, 0.1, h)
+        for (var y = squareHeight; y < h; y += squareHeight) ctx.strokeRect(0, y, w, 0.1)
         ctx.fill()
         ctx.closePath()
-    } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
 }
 
-const updateArea = wall => {
-    grid()
+const updateArea = wall => { //Рисовка стены
+    toggleGrid()
     ctx.beginPath()
     addWall(wall)
     ctx.rect(getXcoords(wall), getYcoords(wall), wall.w, wall.h);
@@ -111,7 +124,7 @@ const updateArea = wall => {
     ctx.closePath()
 }
 
-const loadWalls = () => {
+const loadWalls = () => { //Очистка ареи + отрисовка стен
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     walls.map(e => {
         updateArea(e)
@@ -121,8 +134,7 @@ const loadWalls = () => {
 }
 
 updateArea({ x: 0, y: 0, w: 15, h: 50, id: 1, burn: [], permeability: [] })
-
-updateArea({ x: 50, y: 50, w: 15, h: 50, id: 2 })
+/*END OF REDRAW AREA*/
 
 /* LISTENERS */
 const takeDraggableWall = e => {
@@ -136,26 +148,41 @@ const takeDraggableWall = e => {
         } else { wall.active = false }
     }
     )
+    // Снятие активной таблички стены
+    if (!getSelectedWall() && selectedPanelItem) setSelectedPanelItem(null)
+
     loadWalls()
 }
 
+const coordsToSquares = (coords, wall) => {
+    console.log
+    coords = coords / getXPixelRatio()
+
+    console.log(coords)
+}
+ 
 const dragWall = e => {
     const wall = getDraggableWall()
     if (wall) {
-        let newX = Math.round(e.layerX - currArea.x - (wall.w / 2))
-        let newY = Math.round(e.layerY - currArea.y - (wall.h / 2))
+        let newX = Math.round(
+            e.layerX - currArea.x - (wall.w / 2)
+        )
+        let newY = Math.round(
+            e.layerY - currArea.y - (wall.h / 2)
+        )
         if (newX < 0) {
             newX = 0
         }
-        if (newX >= currArea.width) {
-            newX = currArea.width
+        if (newX >= currArea.width - wall.w) {
+            newX = currArea.width - wall.w
         }
         if (newY < 0) {
             newY = 0
         }
-        if (newY >= currArea.height) {
-            newY = currArea.height
+        if (newY >= currArea.height - wall.h) {
+            newY = currArea.height - wall.h
         }
+        coordsToSquares(newX, wall)
         wall.x = newX
         wall.y = newY
         loadWalls()
@@ -169,7 +196,7 @@ const dragWallOnKey = e => {
         switch (e.code) {
             case 'KeyD':
             case 'ArrowRight':
-                if (currArea.width > wall.x) {
+                if (currArea.width - wall.w > wall.x) {
                     wall.x += 1
                 }
                 break
@@ -181,7 +208,7 @@ const dragWallOnKey = e => {
                 break
             case 'KeyS':
             case 'ArrowDown':
-                if (currArea.height > wall.y) {
+                if (currArea.height - wall.h > wall.y) {
                     wall.y += 1
                 }
                 break
@@ -200,7 +227,6 @@ const dragWallOnKey = e => {
                 wall[wallLength] += 1
         }
     }
-    updatePanel(wall)
     loadWalls()
 }
 
