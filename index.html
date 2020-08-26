@@ -16,7 +16,7 @@
     <div class="game-panel">
       <div class="game-panel__settings">
         <label for="grid">Enable grid</label>
-        <input name="grid" type="checkbox" onClick={loadWalls()} checked>
+        <input name="grid" type="checkbox" onClick="loadWalls()" checked>
       </div>
       <div class="game-panel__tabs">
         <input type="radio" name="tab-btn" id="tab-btn-1" checked>
@@ -26,7 +26,10 @@
         <input type="radio" name="tab-btn" id="tab-btn-3">
         <label for="tab-btn-3" class="game-panel__label">Areas</label>
 
-        <section class="game-panel__walls">
+        <section class="game-panel__walls game-panel-walls">
+              <button class="game-panel-wall__newWall" onClick="addWall()">
+                Добавить стенку
+              </button>
         </section>
         <section class="game-panel__wind">
           Содержимое 2...
