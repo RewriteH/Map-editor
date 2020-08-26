@@ -22,7 +22,7 @@ const getXcoords = e => currArea.x + e.x * getXPixelRatio
 const getYcoords = e => currArea.y + e.y * getYPixelRatio
 var canvasWidthInSquares = canvas.width / getXPixelRatio
 var canvasHeightInSquares = canvas.height / getYPixelRatio
-const generateId = () => walls[walls.length - 1].id + 1
+const generateId = () => walls.length ? walls[walls.length - 1].id + 1 : 1
 /*END OF HELP FUNCTIONS */
 
 
@@ -55,11 +55,18 @@ const hideWall = (e, wallId) => {
 
 const copyWall = wallId => {
     const copiedWall = walls.filter(wall => wall.id === wallId)
-    const wall = {...copiedWall[0], hide: false, id: generateId()}
+    const wall = { ...copiedWall[0], hide: false, id: generateId() }
     addWallToPanel(wall)
     loadWalls()
 }
 
+
+const deleteWall = wallId => {
+    const index = walls.findIndex(wall => wall.id === wallId)
+    walls.splice(index, 1)
+    document.querySelector(`#wall-${wallId}`).remove()
+    loadWalls()
+}
 
 const updatePanel = wall => {
     const panelWall = document.querySelector(`#wall-${wall.id}`)
@@ -124,7 +131,10 @@ const addWallToPanel = wall => {
         </div>
         <button class="game-panel-wall__copy" onClick="copyWall(${wall.id})">Copy</button>
         <button class="game-panel-wall__hide" onClick="hideWall(this, ${wall.id})">
-        Toggle hide
+            Toggle hide
+        </button>
+        <button class="game-panel-wall__delete" onClick="deleteWall(${wall.id})">
+            Delete
         </button>
     </div>`
     )
@@ -189,9 +199,11 @@ const takeDraggableWall = e => {
         // (Клик > координат начала wall && клик < координат конца wall
         if (e.layerX > getXcoords(wall) && e.layerX < getXcoords(wall) + wall.w * getXPixelRatio &&
             e.layerY > getYcoords(wall) && e.layerY < getYcoords(wall) + wall.h * getYPixelRatio) {
-            wall.active = true
-            setSelectedPanelItem(document.querySelector(`#wall-${wall.id}`))
-            wall.draggable = true
+            if (!wall.hide) {
+                wall.active = true
+                setSelectedPanelItem(document.querySelector(`#wall-${wall.id}`))
+                wall.draggable = true
+            }
         } else { wall.active = false }
     }
     )
