@@ -1,21 +1,21 @@
 var canvas = document.querySelector('.game-area__ctx')
 var ctx = canvas.getContext('2d')
-var panelWalls = document.querySelector('.game-panel__walls')
-var panelAreas = document.querySelector('.game-panel__areas')
+var panelWalls = document.querySelector('.game-panel-walls')
+var panelAreas = document.querySelector('.game-panel-areas')
 var gridCheckbox = document.querySelector('input[name=grid]')
-var newWallForm = document.querySelector('.game-panel-wall__newWall')
-var draggableWall = null
+var newElementButton = document.querySelectorAll('.game-panel-item__newElement')
 var selectedPanelItem = null
+var selectedPanelTab = null
+var selectedElements = null
 
 var areas = [
-    { x: 36, y: 5, w: 30, h: 30, id: 1,  color: 'rgba(0, 0, 0, 0.2)'},
-    { x: 15, y: 65, w: 30, h: 30, id: 2, color: 'rgba(0, 0, 0, 0.2)'}
+    { x: 36, y: 5, w: 30, h: 30, id: 1, color: 'rgba(65, 212, 225, 0.3)', extra: { coup: false, x: 0, y: 0, } },
+    { x: 15, y: 65, w: 30, h: 30, id: 2, color: 'rgba(65, 212, 225, 0.3)', extra: { coup: false, x: 0, y: 0, } }
 ]
 var walls = [
     { x: 0, y: 0, w: 30, h: 15, id: 1, hide: false },
     { x: 0, y: 0, w: 15, h: 15, id: 2, hide: false }
 ]
-
 
 const gridSettings = {
     squareWidth: 100,
@@ -23,54 +23,81 @@ const gridSettings = {
 }
 
 /*HELP FUNCTIONS */
-const getSelectedWall = () => walls.find(e => e.active === true)
-const getDraggableWall = () => walls.find(e => e.draggable === true)
+const getSelectedElement = () => !!selectedElements ? selectedElements.find(e => e.active === true) : null
+const getDraggableElement = () => !!selectedElements ? selectedElements.find(e => e.draggable === true) : null
+const getSelectedWall = () => walls.find(a => a.active === true)
+const getAreaById = id => areas.find(area => area.id === id)
 const getSelectedArea = () => areas.find(a => a.active === true)
 const getXPixelRatio = canvas.width / gridSettings.squareWidth
 const getYPixelRatio = canvas.height / gridSettings.squareHeight
 const getXcoords = e => e.x * getXPixelRatio
 const getYcoords = e => e.y * getYPixelRatio
-var canvasWidthInSquares = gridSettings.squareWidth
-var canvasHeightInSquares = gridSettings.squareHeight
-const generateWallId = () => walls.length + 1 || 1
-const generateAreaId = () => areas.length + 1 || 1
+const canvasWidthInSquares = gridSettings.squareWidth
+const canvasHeightInSquares = gridSettings.squareHeight
+const generateElementId = () => selectedElements.length + 1 || 1
+
 /*END OF HELP FUNCTIONS */
 
-const addWall = () => {
-    const wall = {
-        x: 0,
-        y: 0,
-        w: 15,
-        h: 15,
-        id: generateWallId(),
-        hide: false
+const showAllHideElements = () => {
+    document.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
+    walls.forEach(e => e.hide = false)
+    areas.forEach(e => e.hide = false)
+    loadWalls()
+}
+
+const hideElements = e => {
+    let elements;
+    if (e.id === 'walls') {
+        elements = walls
     }
-    walls.push(wall)
-    addWallToPanel(wall)
+    else if (e.id === 'areas') {
+        elements = areas
+    }
+
+    elements.forEach(element => element.hide = !element.hide)
     loadWalls()
 }
 
-const hideWall = (e, wallId) => {
+const hideElement = (e, elementId) => {
     e.classList.toggle('active')
-    const wall = walls.find(wall => wall.id === wallId)
-    wall.hide = !wall.hide
+    const element = selectedElements.find(element => element.id === elementId)
+    element.hide = !element.hide
     loadWalls()
 }
 
-const copyWall = wallId => {
-    const copiedWall = walls.filter(wall => wall.id === wallId)
-    const wall = { ...copiedWall[0], hide: false, id: generateWallId() }
-    walls.push(wall)
-    addWallToPanel(wall)
+const copyElement = elementId => {
+    console.log(elementId)
+    const copiedElement = selectedElements.filter(element => element.id === elementId)
+    const element = { ...copiedElement[0], hide: false, id: generateElementId() }
+    selectedElements.push(element)
     loadWalls()
 }
 
-
-const deleteWall = wallId => {
-    const index = walls.findIndex(wall => wall.id === wallId)
-    walls.splice(index, 1)
-    document.querySelector(`#wall-${wallId}`).remove()
+const deleteElement = elementId => {
+    const index = selectedElements.findIndex(element => element.id === elementId)
+    selectedElements.splice(index, 1)
+    document.querySelector(`#${selectedPanelTab}-${elementId}`).remove()
     loadWalls()
+}
+
+const setSelectedTab = e => {
+    if (e.id === 'settings') {
+        selectedElements = null
+        selectedPanelTab = null
+        return
+    }
+    else if (e.id === 'walls') {
+        selectedElements = walls
+        selectedPanelTab = 'wall'
+    }
+    else if (e.id === 'areas') {
+        selectedElements = areas
+        selectedPanelTab = 'area'
+    }
+    else if (e.id === 'wind') {
+        selectedElements = wind
+        selectedPanelTab = 'wind'
+    }
 }
 
 const updateWallPanel = wall => {
@@ -81,8 +108,6 @@ const updateWallPanel = wall => {
         }
     }
 }
-
-
 
 const setSelectedPanelItem = e => {
     if (e === null) {
@@ -104,39 +129,15 @@ const removeSelectedItem = () => {
     if (area) area.active = false
 }
 
-const setSelectedWall = e => {
-    removeSelectedItem()
-    setSelectedPanelItem(e)
-    walls.forEach(wall => {
-        if (e.id === `wall-${wall.id}`) {
-            wall.active = true
-        } else { wall.active = false }
-    }
-    )
-    loadWalls()
-}
 
-const setSelectedArea = e => {
+const setSelectedElement = e => {
     removeSelectedItem()
     setSelectedPanelItem(e)
-    areas.forEach(area => {
-        if (e.id === `area-${area.id}`) {
-            area.active = true
-        } else { area.active = false}
+    selectedElements.forEach(element => {
+        if (e.id === `${selectedPanelTab}-${element.id}`) {
+            element.active = true
+        } else { element.active = false }
     })
-    console.log(getSelectedArea())
-    loadWalls()
-}
-
-const wallChange = e => {
-    const wall = getSelectedWall()
-    wall[e.name] = +e.value
-    loadWalls()
-}
-
-const areaChange = e => {
-    const area = getSelectedArea()
-    area[e.name] = +e.value
     loadWalls()
 }
 
@@ -144,27 +145,27 @@ const addWallToPanel = wall => {
     if (document.querySelector(`#wall-${wall.id}`)) return
     panelWalls.insertAdjacentHTML('beforeend',
         `<div 
-        class="game-panel__item game-panel-item"
+        class="game-panel-walls__item game-panel-item"
         id="wall-${wall.id}"
-        onclick="setSelectedWall(this)"
+        onmousedown="setSelectedElement(this)"
     >
         <div class="game-panel-item__coords">
             <span>x:</span>
-            <input name="x" oninput="wallChange(this)" value="${wall.x}">
+            <input name="x" oninput="elementChange(this)" value="${wall.x}">
             <span>y:</span>
-            <input name="y" oninput="wallChange(this)" value="${wall.y}">
+            <input name="y" oninput="elementChange(this)" value="${wall.y}">
         </div>
         <div class="game-panel-item__size">
             <span>width:</span>
-            <input  oninput="wallChange(this)" name="w" value="${wall.w}">
+            <input oninput="elementChange(this)" name="w" value="${wall.w}">
             <span>height:</span>
-            <input oninput="wallChange(this)" name="h" value="${wall.h}">
+            <input oninput="elementChange(this)" name="h" value="${wall.h}">
         </div>
-        <button class="game-panel-item__copy" onClick="copyWall(${wall.id})">Copy</button>
-        <button class="game-panel-item__hide" onClick="hideWall(this, ${wall.id})">
+        <button class="game-panel-item__copy" onClick="copyElement(${wall.id})">Copy</button>
+        <button class="game-panel-item__hide" onClick="hideElement(this, ${wall.id})">
             Toggle hide
         </button>
-        <button class="game-panel-item__delete" onClick="deleteWall(${wall.id})">
+        <button class="game-panel-item__delete" onClick="deleteElement(${wall.id})">
             Delete
         </button>
     </div>`
@@ -173,25 +174,77 @@ const addWallToPanel = wall => {
 
 const addAreaToPanel = area => {
     if (document.querySelector(`#area-${area.id}`)) return
-    panelAreas.insertAdjacentHTML('beforeend', 
-    `<div 
-        class="game-panel__item game-panel-item"
+    panelAreas.insertAdjacentHTML('beforeend',
+        `<div 
+        class="game-panel-areas__item game-panel-item"
         id="area-${area.id}"
-        onclick="setSelectedArea(this)"
+        onmousedown="setSelectedElement(this)"
     >
         <div class="game-panel-item__coords">
             <span>x:</span>
-            <input oninput="areaChange(this)" name="x" value="${area.x}">
+            <input name="x" oninput="elementChange(this)" value="${area.x}">
             <span>y:</span>
-            <input oninput="areaChange(this)" name="y" value="${area.y}">
+            <input name="y" oninput="elementChange(this)" value="${area.y}">
         </div>
-        <button>Coup</button>
+        <div class="game-panel-item__size">
+            <span>width:</span>
+            <input oninput="elementChange(this)" name="w" value="${area.w}">
+            <span>height:</span>
+            <input oninput="elementChange(this)" name="h" value="${area.h}">
+        </div>
+        <div class="game-panel-item__params">
+            <div>
+                <label for="x">x</label>
+                <input id="x" type="checkbox" checked="${area.extra.x}">
+            </div>
+            <div>
+                <label for="y">y</label>
+                <input id="y" type="checkbox" checked="${area.extra.y}">
+            </div>
+            <div>
+                <label for="coup">coup</label>
+                <input id="coup" type="checkbox" checked="${area.extra.y}" onClick="coupAreaColor(${area.id}">
+            </div>
+        </div>
+        <button class="game-panel-item__copy" onClick="copyElement(${area.id})">Copy</button>
+        <button class="game-panel-item__hide" onClick="hideElement(this, ${area.id})">
+            Toggle hide
+        </button>
+        <button class="game-panel-item__delete" onClick="deleteElement(${area.id})">
+            Delete
+        </button>
     </div>`
     )
 }
 
-/*REDRAW AREA*/
+const coupAreaColor = areaId => {
+    const area = getAreaById(areaId)
+    if (!area.extra.coup) {
+        area.color = 'rgba(65, 212, 225, 0.3)'
+        loadWalls()
+    }
+    const color = {}
+    if (area.width > 100) {
+        color[1] = 100
+    } else {
+        color[1] = Math.round(Math.random(0, 99) * 100)
+    }
+    if (area.x > canvasWidthInSquares) {
+        color[2] = Math.round(Math.random(100, 200) * 100)
+    } else {
+        color[2] = Math.round(Math.random(0, 99) * 100)
+    }
+    if (area.y < canvasHeightInSquares) {
+        color[3] = Math.round(Math.random(100, 200) * 100)
+    } else {
+        color[3] = Math.round(Math.random(0, 99) * 100)
+    }
+    console.log(`rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`)
+    area.color = `rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`
+    loadWalls()
+}
 
+/*REDRAW AREA*/
 const toggleGrid = e => {
     if (gridCheckbox.checked) {
         ctx.beginPath()
@@ -228,155 +281,158 @@ const drawElement = element => {
     ctx.closePath()
 }
 
-//Очистка ареи 
+//Очистка + загрузка ареи 
 const loadWalls = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     toggleGrid()
     areas.map(e => {
-        conditionColor(e)
         addAreaToPanel(e)
         drawElement(e)
     })
     walls.map(e => {
         addWallToPanel(e)
-        drawElement(e)
         updateWallPanel(e)
+        drawElement(e)
     }
     )
-}
-
-const conditionColor = element => {
-    if (element.x + element.w > canvasWidthInSquares / 2) {
-        element.color = 'rgba(65, 212, 225, 0.3)'
-    }
-    if (element.y + element.h > canvasHeightInSquares / 2) {
-        element.color = 'rgba(225, 79, 65, 0.3)'
-    }
 }
 
 loadWalls()
 /*END OF REDRAW AREA*/
 
 /* LISTENERS */
-const takeDraggableWall = e => {
+
+const elementChange = e => {
+    const element = getSelectedElement()
+    element[e.name] = +e.value
+    loadWalls()
+}
+
+
+const addElement = () => {
+
+    const element = {
+        x: 0,
+        y: 0,
+        w: 15,
+        h: 15,
+        id: generateElementId(),
+        hide: false
+    }
+
+    if (selectedElements === areas) {
+        element.extra = {x: 0, y: 0, coup: false}
+        element.color = 'rgba(65, 212, 225, 0.3)'
+    }
+
+    selectedElements.push(element)
+    loadWalls()
+}
+
+const takeDraggableElement = e => {
     removeSelectedItem()
-    for (let i = 0; i < walls.length; i++) {
-        if (e.layerX > getXcoords(walls[i]) && e.layerX < getXcoords(walls[i]) + walls[i].w * getXPixelRatio &&
-            e.layerY > getYcoords(walls[i]) && e.layerY < getYcoords(walls[i]) + walls[i].h * getYPixelRatio) {
-            if (!walls[i].hide) {
-                walls[i].active = true
-                setSelectedPanelItem(document.querySelector(`#wall-${walls[i].id}`))
-                walls[i].draggable = true
+    const elements = selectedElements
+    if (!elements) return
+    for (let i = 0; i < elements.length; i++) {
+        if (e.layerX > getXcoords(elements[i]) && e.layerX < getXcoords(elements[i]) + elements[i].w * getXPixelRatio &&
+            e.layerY > getYcoords(elements[i]) && e.layerY < getYcoords(elements[i]) + elements[i].h * getYPixelRatio) {
+            if (!elements[i].hide) {
+                elements[i].active = true
+                setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${elements[i].id}`))
+                elements[i].draggable = true
                 break
             }
         }
     }
 
-    // Снятие активной таблички стены
-    if (!getSelectedWall() && selectedPanelItem) setSelectedPanelItem(null)
+    if (!getSelectedElement() && selectedPanelItem) setSelectedPanelItem(null)
 
     loadWalls()
 }
 
+const dragElement = e => {
 
-const squaresToCoords = (coords, axis) => {
-    if (axis === 'X') {
-        let square = Math.round(coords / getXPixelRatio)
-        return square
-    }
-    if (axis === 'Y') {
-        let square = Math.round(coords / getYPixelRatio)
-        return square
-    }
+    const element = getDraggableElement()
 
-}
-
-const dragWall = e => {
-    const wall = getDraggableWall()
-    if (wall) {
-        let newX = Math.round(
-            e.layerX - (wall.w * getXPixelRatio / 2)
-        )
-        let newY = Math.round(
-            e.layerY - (wall.h * getYPixelRatio / 2)
-        )
-        newX = squaresToCoords(newX, 'X')
-        newY = squaresToCoords(newY, 'Y')
+    if (element) {
+        let newX = Math.round((e.layerX - element.x) / getXPixelRatio)
+        let newY = Math.round((e.layerY - element.y) / getYPixelRatio)
+        console.log(newX)
         if (newX < 0) {
             newX = 0
         }
         if (newY < 0) {
             newY = 0
         }
-        if (newX + wall.w > canvasWidthInSquares) {
-            newX = canvasWidthInSquares - wall.w
+        if (newX + element.w > canvasWidthInSquares) {
+            newX = canvasWidthInSquares - element.w
         }
-        if (newY + wall.h > canvasHeightInSquares) {
-            newY = canvasHeightInSquares - wall.h
+        if (newY + element.h > canvasHeightInSquares) {
+            newY = canvasHeightInSquares - element.h
         }
-        wall.x = newX
-        wall.y = newY
+        element.x = newX
+        element.y = newY
         loadWalls()
     }
 }
 
-
-
-const dragWallOnKey = e => {
-    let wall = getSelectedWall()
-    if (wall) {
-        let wallLength = wall.w > wall.h ? 'w' : 'h'
+const dragElementOnKey = e => {
+    let element = getSelectedElement()
+    if (element) {
+        let elementLength = element.w > element.h ? 'w' : 'h'
         switch (e.code) {
             case 'KeyD':
             case 'ArrowRight':
-                if (wall.x + wall.w < canvasWidthInSquares) {
-                    wall.x += 1
+                if (element.x + element.w < canvasWidthInSquares) {
+                    element.x += 1
                 } else {
-                    wall.x = canvasWidthInSquares - wall.w
+                    element.x = canvasWidthInSquares - element.w
                 }
                 break
             case 'KeyA':
             case 'ArrowLeft':
-                if (0 < wall.x) {
-                    wall.x -= 1
+                if (0 < element.x) {
+                    element.x -= 1
                 }
                 break
             case 'KeyS':
             case 'ArrowDown':
-                if (wall.y + 1 + wall.h < canvasHeightInSquares) {
-                    wall.y += 1
+                if (element.y + 1 + element.h < canvasHeightInSquares) {
+                    element.y += 1
                 } else {
-                    wall.y = canvasHeightInSquares - wall.h
+                    element.y = canvasHeightInSquares - element.h
                 }
                 break
             case 'KeyW':
             case 'ArrowUp':
-                if (0 < wall.y) {
-                    wall.y -= 1
+                if (0 < element.y) {
+                    element.y -= 1
                 }
                 break
             case 'KeyQ':
-                if (wall[wallLength] > 10) {
-                    wall[wallLength] -= 1
+                if (element[elementLength] > 10) {
+                    element[elementLength] -= 1
                 }
                 break
             case 'KeyE':
-                wall[wallLength] += 1
+                element[elementLength] += 1
         }
     }
     loadWalls()
 }
 
-const dropDraggableWall = e => {
-    const wall = getDraggableWall()
-    if (wall) wall.draggable = null
+const dropDraggableElement = e => {
+    const element = getDraggableElement()
+    if (element) element.draggable = null
 }
 
-canvas.addEventListener('mousedown', takeDraggableWall)
+newElementButton.forEach(e => e.addEventListener('click', addElement))
 
-canvas.addEventListener('mousemove', dragWall)
+canvas.addEventListener('mousedown', takeDraggableElement)
 
-document.addEventListener('keydown', dragWallOnKey)
+canvas.addEventListener('mousemove', dragElement)
 
-document.addEventListener('mouseup', dropDraggableWall)
+document.addEventListener('keydown', dragElementOnKey)
+
+document.addEventListener('mouseup', dropDraggableElement)
 /* END OF LISTENERS */

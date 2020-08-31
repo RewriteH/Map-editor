@@ -14,28 +14,44 @@
       <canvas class="game-area__ctx" width="500px" height="600px"></canvas>
     </div>
     <div class="game-panel">
-      <div class="game-panel__settings">
-        <label for="grid">Enable grid</label>
-        <input name="grid" type="checkbox" onClick="loadWalls()" checked>
-      </div>
-      <div class="game-panel__tabs">
-        <input type="radio" name="tab-btn" id="tab-btn-1" checked>
-        <label for="tab-btn-1" class="game-panel__label">Walls</label>
-        <input type="radio" name="tab-btn" id="tab-btn-2">
-        <label for="tab-btn-2" class="game-panel__label">Areas</label>
-        <input type="radio" name="tab-btn" id="tab-btn-3">
-        <label for="tab-btn-3" class="game-panel__label">Wind</label>
-
-        <section class="game-panel__walls game-panel-walls">
-              <button class="game-panel-item__newWall" onClick="addWall()">
-                Добавить стенку
-              </button>
+      <div class="game-panel__tabs game-panel-tabs">
+          <input type="radio" name="tabs" id="settings" checked onClick="setSelectedTab(this)">
+          <label for="settings" class="game-panel-tabs__label">General settings</label>
+          <input type="radio" name="tabs" id="walls" onClick="setSelectedTab(this)">
+          <label for="walls" class="game-panel-tabs__label">Walls</label>
+          <input type="radio" name="tabs" id="areas" onClick="setSelectedTab(this)">
+          <label for="areas" class="game-panel-tabs__label">Areas</label>
+          <input type="radio" name="tabs" id="wind" onClick="setSelectedTab(this)">
+          <label for="wind" class="game-panel-tabs__label">Wind</label>
+        <section class="game-panel__settings game-panel-settings">
+          <div class="game-panel-item">
+            <label for="grid">Enable grid</label>
+            <input name="grid" type="checkbox" onClick="loadWalls()" checked>
+          </div>
+          <div class="game-panel-item">
+            <label for="grid">Show all hide elements</label>
+            <input name="grid" type="checkbox" onClick="showAllHideElements()">
+          </div>
+          <div class="game-panel-item">
+            <label for="hideWalls">Hide walls</label>
+            <input name="hideWalls" type="checkbox" id="walls" onClick="hideElements(this)">
+          </div>
+          <div class="game-panel-item">
+            <label for="grid">Hide areas</label>
+            <input name="grid" type="checkbox" id="areas" onClick="hideElements(this)">
+          </div>
         </section>
-        <section class="game-panel__areas">
-
+        <section class="game-panel__walls game-panel-walls">
+          <button class="game-panel-item__newElement">
+            Добавить стенку
+          </button>
+        </section>
+        <section class="game-panel__areas game-panel-areas">
+          <button class="game-panel-item__newElement">
+            Добавить поле
+          </button>
         </section>
         <section class="game-panel__wind">
-
         </section>
       </div>
     </div>
