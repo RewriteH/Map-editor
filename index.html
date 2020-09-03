@@ -30,15 +30,15 @@
           </div>
           <div class="game-panel-item">
             <label for="grid">Show all hide elements</label>
-            <input name="grid" type="checkbox" onClick="showAllHideElements()">
+            <input name="grid" type="checkbox" onClick="showAllHideElements(this)">
           </div>
           <div class="game-panel-item">
             <label for="hideWalls">Hide walls</label>
-            <input name="hideWalls" type="checkbox" id="walls" onClick="hideElements(this)">
+            <input name="hideWalls" type="checkbox" id="walls" onClick="loadWalls()">
           </div>
           <div class="game-panel-item">
-            <label for="grid">Hide areas</label>
-            <input name="grid" type="checkbox" id="areas" onClick="hideElements(this)">
+            <label for="hideAreas">Hide areas</label>
+            <input name="hideAreas" type="checkbox" id="areas" onClick="loadWalls()">
           </div>
         </section>
         <section class="game-panel__walls game-panel-walls">

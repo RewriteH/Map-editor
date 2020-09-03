@@ -4,13 +4,15 @@ var panelWalls = document.querySelector('.game-panel-walls')
 var panelAreas = document.querySelector('.game-panel-areas')
 var gridCheckbox = document.querySelector('input[name=grid]')
 var newElementButton = document.querySelectorAll('.game-panel-item__newElement')
+var hideWallsCheckbox = document.querySelector('input[name=hideWalls]')
+var hideAreasCheckbox = document.querySelector('input[name=hideAreas]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
 
 var areas = [
-    { x: 36, y: 5, w: 30, h: 30, id: 1, color: 'rgba(65, 212, 225, 0.3)', extra: { coup: false, x: 0, y: 0, } },
-    { x: 15, y: 65, w: 30, h: 30, id: 2, color: 'rgba(65, 212, 225, 0.3)', extra: { coup: false, x: 0, y: 0, } }
+    { x: 36, y: 5, w: 30, h: 30, id: 1, color: 'rgba(50,50,50,0.3)', extra: { coup: false, x: 0, y: 0, } },
+    { x: 15, y: 65, w: 30, h: 30, id: 2, color: 'rgba(50,50,50,0.3)', extra: { coup: false, x: 0, y: 0, } }
 ]
 var walls = [
     { x: 0, y: 0, w: 30, h: 15, id: 1, hide: false },
@@ -38,25 +40,19 @@ const generateElementId = () => selectedElements.length + 1 || 1
 
 /*END OF HELP FUNCTIONS */
 
-const showAllHideElements = () => {
-    document.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
-    walls.forEach(e => e.hide = false)
-    areas.forEach(e => e.hide = false)
+const showAllHideElements = (e) => {
+    if (!e.checked) return
+    if (!hideWallsCheckbox.checked) {
+        panelWalls.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
+        walls.forEach(e => e.hide = false)
+    }
+    if (!hideAreasCheckbox.checked) {
+        panelAreas.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
+        areas.forEach(e => e.hide = false)
+    }
     loadWalls()
 }
 
-const hideElements = e => {
-    let elements;
-    if (e.id === 'walls') {
-        elements = walls
-    }
-    else if (e.id === 'areas') {
-        elements = areas
-    }
-
-    elements.forEach(element => element.hide = !element.hide)
-    loadWalls()
-}
 
 const hideElement = (e, elementId) => {
     e.classList.toggle('active')
@@ -201,10 +197,11 @@ const addAreaToPanel = area => {
                 <label for="y">y</label>
                 <input id="y" type="checkbox" checked="${area.extra.y}">
             </div>
-            <div>
-                <label for="coup">coup</label>
-                <input id="coup" type="checkbox" checked="${area.extra.y}" onClick="coupAreaColor(${area.id}">
-            </div>
+            
+            <button class="game-panel-item__hide" onClick="coupArea(${area.id})">
+                Coup
+            </button>
+            
         </div>
         <button class="game-panel-item__copy" onClick="copyElement(${area.id})">Copy</button>
         <button class="game-panel-item__hide" onClick="hideElement(this, ${area.id})">
@@ -217,31 +214,32 @@ const addAreaToPanel = area => {
     )
 }
 
-const coupAreaColor = areaId => {
+const coupArea = areaId => {
     const area = getAreaById(areaId)
-    if (!area.extra.coup) {
-        area.color = 'rgba(65, 212, 225, 0.3)'
-        loadWalls()
-    }
-    const color = {}
-    if (area.width > 100) {
-        color[1] = 100
-    } else {
-        color[1] = Math.round(Math.random(0, 99) * 100)
-    }
-    if (area.x > canvasWidthInSquares) {
-        color[2] = Math.round(Math.random(100, 200) * 100)
-    } else {
-        color[2] = Math.round(Math.random(0, 99) * 100)
-    }
-    if (area.y < canvasHeightInSquares) {
-        color[3] = Math.round(Math.random(100, 200) * 100)
-    } else {
-        color[3] = Math.round(Math.random(0, 99) * 100)
-    }
-    console.log(`rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`)
-    area.color = `rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`
+    area.color = 'rgba(0, 0, 0, 0.3)'
     loadWalls()
+}
+
+const changeAreaColor = area => {
+    const color = {
+        1: 50,
+        2: 50,
+        3: 50
+    }
+    if (area.w > canvasWidthInSquares / 2) {
+        color[1] = 90
+    } 
+    
+    if (area.h > canvasHeightInSquares / 2) {
+        color[2] = 90
+    }
+    if (area.x + area.w > canvasWidthInSquares / 2) {
+        color[3] = 90
+    }
+
+    console.log(`rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`)
+
+    area.color = `rgba(${color[1]}, ${color[2]}, ${color[3]}, 0.3)`
 }
 
 /*REDRAW AREA*/
@@ -286,15 +284,19 @@ const loadWalls = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     toggleGrid()
     areas.map(e => {
+        changeAreaColor(e)
         addAreaToPanel(e)
         drawElement(e)
     })
-    walls.map(e => {
-        addWallToPanel(e)
-        updateWallPanel(e)
-        drawElement(e)
+
+    if (!hideWallsCheckbox.checked) {
+        walls.map(e => {
+            addWallToPanel(e)
+            updateWallPanel(e)
+            drawElement(e)
+        }
+        )
     }
-    )
 }
 
 loadWalls()
@@ -321,7 +323,7 @@ const addElement = () => {
     }
 
     if (selectedElements === areas) {
-        element.extra = {x: 0, y: 0, coup: false}
+        element.extra = { x: 0, y: 0, coup: false }
         element.color = 'rgba(65, 212, 225, 0.3)'
     }
 
@@ -357,7 +359,6 @@ const dragElement = e => {
     if (element) {
         let newX = Math.round((e.layerX - element.x) / getXPixelRatio)
         let newY = Math.round((e.layerY - element.y) / getYPixelRatio)
-        console.log(newX)
         if (newX < 0) {
             newX = 0
         }
