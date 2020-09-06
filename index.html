@@ -26,7 +26,7 @@
         <section class="game-panel__settings game-panel-settings">
           <div class="game-panel-item">
             <label for="grid">Enable grid</label>
-            <input name="grid" type="checkbox" onClick="loadWalls()" checked>
+            <input name="grid" type="checkbox" onClick="renderAll()" checked>
           </div>
           <div class="game-panel-item">
             <label for="grid">Show all hide elements</label>
@@ -34,11 +34,11 @@
           </div>
           <div class="game-panel-item">
             <label for="hideWalls">Hide walls</label>
-            <input name="hideWalls" type="checkbox" id="walls" onClick="loadWalls()">
+            <input name="hideWalls" type="checkbox" id="walls" onClick="renderAll()">
           </div>
           <div class="game-panel-item">
             <label for="hideAreas">Hide areas</label>
-            <input name="hideAreas" type="checkbox" id="areas" onClick="loadWalls()">
+            <input name="hideAreas" type="checkbox" id="areas" onClick="renderAll()">
           </div>
         </section>
         <section class="game-panel__walls game-panel-walls">
