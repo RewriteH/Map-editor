@@ -10,7 +10,7 @@ var hideAreasCheckbox = document.querySelector('input[name=hideAreas]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
-let gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","extra":{"coup":false,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"extra":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"extra":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"extra":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"extra":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"extra":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"extra":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"extra":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","extra":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false}]}')
+let gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"params":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"params":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false}]}')
 
 
 var winds = [
@@ -56,7 +56,7 @@ const showAllHideElements = e => {
         panelAreas.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
         areas.forEach(e => e.hide = false)
     }
-    loadWalls()
+    renderAll()
 }
 
 
@@ -64,7 +64,7 @@ const hideElement = (e, elementId) => {
     e.classList.toggle('active')
     const element = selectedElements.find(element => element.id === elementId)
     element.hide = !element.hide
-    loadWalls()
+    renderAll()
 }
 
 const copyElement = elementId => {
@@ -89,21 +89,21 @@ const copyElement = elementId => {
         }
     }
     selectedElements.push(element)
-    loadWalls()
+    renderAll()
 }
 
 const deleteElement = elementId => {
     const index = selectedElements.findIndex(element => element.id === elementId)
     selectedElements.splice(index, 1)
     document.querySelector(`#${selectedPanelTab}-${elementId}`).remove()
-    loadWalls()
+    renderAll()
 }
 
 const toggleAreaParams = (areaId, el) => {
     el.classList.toggle('active')
     const area = getAreaById(areaId)
     area.params[el.id] = !area.params[el.id]
-    loadWalls()
+    renderAll()
 }
 
 const setSelectedTab = e => {
@@ -165,7 +165,7 @@ const setSelectedElement = e => {
             element.active = true
         } else { element.active = false }
     })
-    loadWalls()
+    renderAll()
 }
 
 const addWallToPanel = wall => {
@@ -220,13 +220,15 @@ const addAreaToPanel = area => {
             <input oninput="elementChange(this)" name="h" value="${area.h}">
         </div>
         <div class="game-panel-item__params">
-            <button id="x" onClick="toggleAreaParams(${area.id}, this)" ">
+            <button id="x" class="${area.params.x ? 'active' : ''}" onClick="toggleAreaParams(${area.id}, this)">
                 X
             </button>
-            <button id="y" onClick="toggleAreaParams(${area.id}, this)" ">
+            <button id="y" class="${area.params.y ? 'active' : ''}" onClick="toggleAreaParams(${area.id}, this)">
                 Y
             </button>
-            <button class="game-panel-item__coup" onClick="coupArea(this, ${area.id})">
+            <button class="${area.params.y ? 'active' : ''}"
+                onClick="coupArea(this, ${area.id})
+             ">
                 Coup
             </button>
         </div>
@@ -284,7 +286,7 @@ const coupArea = (e, areaId) => {
     e.classList.toggle('active')
     const area = getAreaById(areaId)
     area.params.coup = !area.params.coup
-    loadWalls()
+    renderAll()
 }
 
 const changeAreaColor = area => {
@@ -296,7 +298,6 @@ const changeAreaColor = area => {
         !area.params.y || (b -= 120)
         !area.params.coup || (g -= 150)
     }
-
     area.color = `rgba(${r},${g},${b}, 0.3)`
 }
 
@@ -370,13 +371,13 @@ const blowWall = wind => {
                 wall.y += wind.params.forse
             }
         })
-        loadWalls()
+        renderAll()
     }, 1000);
 }
 
 
 //Очистка + загрузка ареи 
-const loadWalls = () => {
+const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     if (gridCheckbox.checked)
         renderGrid()
@@ -390,9 +391,7 @@ const loadWalls = () => {
     }
     winds.forEach(e => {
         addWindToPanel(e)
-        blowWall(e)
         drawElement(e)
-        drawWindDirection(e)
     })
 
     if (!hideWallsCheckbox.checked) {
@@ -404,7 +403,7 @@ const loadWalls = () => {
     }
 }
 
-loadWalls()
+renderAll()
 /*END OF REDRAW AREA*/
 
 /* LISTENERS */
@@ -412,7 +411,7 @@ loadWalls()
 const elementChange = e => {
     const element = getSelectedElement()
     element[e.name] = +e.value
-    loadWalls()
+    renderAll()
 }
 
 
@@ -424,12 +423,13 @@ const addElement = () => {
         w: 15,
         h: 15,
         id: generateElementId(),
-        hide: false
+        hide: false,
+        draggable: false,
+        active: false,
     }
 
     if (selectedElements === areas) {
         element.params = { x: 0, y: 0, coup: false }
-        element.color = 'rgba(65, 212, 225, 0.3)'
     }
     if (selectedElements === winds) {
         element.params = { X: 10, Y: 10, forse: 1 }
@@ -437,7 +437,7 @@ const addElement = () => {
     }
 
     selectedElements.push(element)
-    loadWalls()
+    renderAll()
 }
 
 const takeDraggableElement = e => {
@@ -470,7 +470,7 @@ const takeDraggableElement = e => {
 
     if (!getSelectedElement() && selectedPanelItem) setSelectedPanelItem(null)
 
-    loadWalls()
+    renderAll()
 }
 
 function xPixelsToCoords(xPx) { return Math.round(xPx / getXPixelRatio) }
@@ -497,7 +497,7 @@ const dragElement = e => {
         element.x = Math.max(element.x, xMin)
         element.y = Math.max(element.y, YMin)
 
-        loadWalls()
+        renderAll()
     }
 }
 
@@ -543,7 +543,7 @@ const dragElementOnKey = e => {
                 element[elementLength] += 1
         }
     }
-    loadWalls()
+    renderAll()
 }
 
 const dropDraggableElement = e => {
