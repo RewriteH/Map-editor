@@ -25,34 +25,34 @@
           <label for="wind" class="game-panel-tabs__label">Wind</label>
         <section class="game-panel__settings game-panel-settings">
           <div class="game-panel-item">
-            <label for="grid">Enable grid</label>
-            <input name="grid" type="checkbox" onClick="renderAll()" checked>
+            <label for="toggleGrid">Enable grid</label>
+            <input id="toggleGrid" type="checkbox" onClick="renderAll()" checked>
           </div>
           <div class="game-panel-item">
-            <label for="grid">Show all hide elements</label>
-            <input name="grid" type="checkbox" onClick="showAllHideElements(this)">
+            <label for="showAllElements">Show all hide elements</label>
+            <input id="showAllElements" type="checkbox" onClick="showAllHideElements(this)">
           </div>
           <div class="game-panel-item">
             <label for="hideWalls">Hide walls</label>
-            <input name="hideWalls" type="checkbox" id="walls" onClick="renderAll()">
+            <input id="hideWalls" type="checkbox" id="walls" onClick="renderAll()">
           </div>
           <div class="game-panel-item">
             <label for="hideAreas">Hide areas</label>
-            <input name="hideAreas" type="checkbox" id="areas" onClick="renderAll()">
+            <input id="hideAreas" type="checkbox" id="areas" onClick="renderAll()">
           </div>
         </section>
         <section class="game-panel__walls game-panel-walls">
-          <button class="game-panel-item__newElement">
+          <button class="game-panel-item__newElement" onClick="addWall()">
             Добавить стенку
           </button>
         </section>
         <section class="game-panel__areas game-panel-areas">
-          <button class="game-panel-item__newElement">
+          <button class="game-panel-item__newElement" onClick="addArea()">
             Добавить поле
           </button>
         </section> 
         <section class="game-panel__winds game-panel-winds">
-          <button class="game-panel-item__newElement">
+          <button class="game-panel-item__newElement" onClick="addWind()">
             Добавить ветер
           </button>
         </section>

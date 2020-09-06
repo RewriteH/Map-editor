@@ -3,10 +3,9 @@ var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel-walls')
 var panelAreas = document.querySelector('.game-panel-areas')
 var panelWinds = document.querySelector('.game-panel-winds')
-var gridCheckbox = document.querySelector('input[name=grid]')
-var newElementButton = document.querySelectorAll('.game-panel-item__newElement')
-var hideWallsCheckbox = document.querySelector('input[name=hideWalls]')
-var hideAreasCheckbox = document.querySelector('input[name=hideAreas]')
+var gridCheckbox = document.querySelector('input[id=toggleGrid]')
+var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
+var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
@@ -126,12 +125,34 @@ const setSelectedTab = e => {
     }
 }
 
-const updateElementPanel = element => {
+const updateWindPanel = element => {
     if (!selectedElements) return
-    const panelElement = document.querySelector(`#${selectedPanelTab}-${element.id}`)
-    panelElement.querySelector(`input[name=x]`).value = element.x
-    console.log(panelElement.querySelector(`input[name=x]`))
+    const panelElement = document.querySelector(`#wind-${element.id}`)
+    for (let prop in element) {
+        if (panelElement.querySelector(`input[name=${prop}]`)) {
+            panelElement.querySelector(`input[name=${prop}]`).value = element[prop]
+        }
+    }
+}
 
+const updateAreaPanel = element => {
+    if (!selectedElements) return
+    const panelElement = document.querySelector(`#area-${element.id}`)
+    for (let prop in element) {
+        if (panelElement.querySelector(`input[name=${prop}]`)) {
+            panelElement.querySelector(`input[name=${prop}]`).value = element[prop]
+        }
+    }
+}
+
+const updateWallPanel = element => {
+    if (!selectedElements) return
+    const panelElement = document.querySelector(`#wall-${element.id}`)
+    for (let prop in element) {
+        if (panelElement.querySelector(`input[name=${prop}]`)) {
+            panelElement.querySelector(`input[name=${prop}]`).value = element[prop]
+        }
+    }
 }
 
 const setSelectedPanelItem = e => {
@@ -155,7 +176,6 @@ const removeSelectedItem = () => {
     if (area) area.active = false
     if (wind) wind.active = false
 }
-
 
 const setSelectedElement = e => {
     removeSelectedItem()
@@ -386,17 +406,20 @@ const renderAll = () => {
         areas.forEach(e => {
             changeAreaColor(e)
             addAreaToPanel(e)
+            updateAreaPanel(e)
             drawElement(e)
         })
     }
     winds.forEach(e => {
         addWindToPanel(e)
+        updateWindPanel(e)
         drawElement(e)
     })
 
     if (!hideWallsCheckbox.checked) {
         walls.forEach(e => {
             addWallToPanel(e)
+            updateWallPanel(e)
             drawElement(e)
         }
         )
@@ -415,30 +438,47 @@ const elementChange = e => {
 }
 
 
-const addElement = () => {
-
+const addWall = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
         w: 15,
         h: 15,
         id: generateElementId(),
-        hide: false,
-        draggable: false,
-        active: false,
-    }
+    } 
+    selectedElements.push(element)
+    renderAll()
+}
 
-    if (selectedElements === areas) {
-        element.params = { x: 0, y: 0, coup: false }
-    }
-    if (selectedElements === winds) {
-        element.params = { X: 10, Y: 10, forse: 1 }
-        element.color = 'rgba(0,255,255,0.3)'
-    }
+
+const addArea = () => {
+    const element = {
+        x: canvasHeightInSquares / 2,
+        y: canvasWidthInSquares / 2,
+        w: 15,
+        h: 15,
+        id: generateElementId(),
+        params: {},
+    } 
 
     selectedElements.push(element)
     renderAll()
 }
+
+const addWind = () => {
+    const element = {
+        x: canvasHeightInSquares / 2,
+        y: canvasWidthInSquares / 2,
+        w: 15,
+        h: 15,
+        id: generateElementId(),
+        params: { X: 0, Y: 0, forse: 0 },
+        color: 'rgba(0,255,255,0.3)'
+    } 
+    selectedElements.push(element)
+    renderAll()
+}
+
 
 const takeDraggableElement = e => {
     xStartFoDrug = e.clientX - canvas.offsetTop;
@@ -554,8 +594,6 @@ const dropDraggableElement = e => {
         delete element.yStatr
     }
 }
-
-newElementButton.forEach(e => e.addEventListener('click', addElement))
 
 canvas.addEventListener('mousedown', takeDraggableElement)
 
