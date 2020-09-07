@@ -47,13 +47,17 @@ const generateElementId = () => selectedElements.length + 1 || 1
 
 const showAllHideElements = e => {
     if (!e.checked) return
-    if (hideWallsCheckbox.checked) {
+    if (!hideWallsCheckbox.checked) {
         panelWalls.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
         walls.forEach(e => e.hide = false)
     }
-    if (hideAreasCheckbox.checked) {
+    if (!hideAreasCheckbox.checked) {
         panelAreas.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
         areas.forEach(e => e.hide = false)
+    }
+    if (!hideWindsCheckbox.checked) {
+        panelWinds.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
+        winds.forEach(e => e.hide = false)
     }
     renderAll()
 }
