@@ -16,7 +16,7 @@
     <div class="game-panel">
       <div class="game-panel__tabs game-panel-tabs">
           <input type="radio" name="tabs" id="settings" checked onClick="setSelectedTab(this)">
-          <label for="settings" class="game-panel-tabs__label">General settings</label>
+          <label for="settings" class="game-panel-tabs__label">View</label>
           <input type="radio" name="tabs" id="walls" onClick="setSelectedTab(this)">
           <label for="walls" class="game-panel-tabs__label">Walls</label>
           <input type="radio" name="tabs" id="areas" onClick="setSelectedTab(this)">
@@ -39,6 +39,10 @@
           <div class="game-panel-item">
             <label for="hideAreas">Hide areas</label>
             <input id="hideAreas" type="checkbox" id="areas" onClick="renderAll()">
+          </div>
+          <div class="game-panel-item">
+            <label for="hideWinds">Hide winds</label>
+            <input id="hideWinds" type="checkbox" id="winds" onClick="renderAll()">
           </div>
         </section>
         <section class="game-panel__walls game-panel-walls">

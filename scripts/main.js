@@ -6,11 +6,11 @@ var panelWinds = document.querySelector('.game-panel-winds')
 var gridCheckbox = document.querySelector('input[id=toggleGrid]')
 var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
+var hideWindsCheckbox = document.querySelector('input[id=hideWinds]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
 let gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"params":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"params":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false}]}')
-
 
 var winds = [
     {
@@ -47,11 +47,11 @@ const generateElementId = () => selectedElements.length + 1 || 1
 
 const showAllHideElements = e => {
     if (!e.checked) return
-    if (!hideWallsCheckbox.checked) {
+    if (hideWallsCheckbox.checked) {
         panelWalls.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
         walls.forEach(e => e.hide = false)
     }
-    if (!hideAreasCheckbox.checked) {
+    if (hideAreasCheckbox.checked) {
         panelAreas.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
         areas.forEach(e => e.hide = false)
     }
@@ -313,15 +313,14 @@ const changeAreaColor = area => {
 
     let r = 220, g = 220, b = 220
 
-    if (area.params) {
-        !area.params.x || (r -= 120)
-        !area.params.y || (b -= 120)
-        !area.params.coup || (g -= 150)
-    }
+    !area.params.x || (r -= 120)
+    !area.params.y || (b -= 120)
+    !area.params.coup || (g -= 150)
+
     area.color = `rgba(${r},${g},${b}, 0.3)`
 }
 
-/*REDRAW AREA*/
+/*RENDER*/
 const renderGrid = e => {
     ctx.beginPath()
     const w = canvas.width - 2
@@ -336,7 +335,6 @@ const renderGrid = e => {
     ctx.closePath()
 }
 
-//Отрисовка элемента
 const drawElement = element => {
     if (element.hide) return
     ctx.beginPath()
@@ -356,46 +354,6 @@ const drawElement = element => {
     ctx.closePath()
 }
 
-const drawWindDirection = wind => {
-    ctx.beginPath()
-    ctx.font = '18px serif';
-    ctx.fillStyle = 'red'
-    ctx.fillText(
-        'Left <',
-        xCoordsToPixels(wind.x + wind.w / 2),
-        yCoordsToPixels(wind.y + wind.h / 2)
-    );
-    ctx.closePath()
-}
-
-const blowWall = wind => {
-    const maxX = wind.x + wind.w
-    const maxY = wind.y + wind.h
-    currWalls = []
-    walls.forEach(wall => {
-        if (wall.x + wall.w > wind.x &&
-            wall.x < maxX &&
-            wall.y + wall.h > wind.y &&
-            wall.y < maxY
-        ) {
-            currWalls.push(wall)
-        }
-    }
-    )
-    setTimeout(() => {
-        currWalls.forEach(wall => {
-            if (wind.params.X) {
-                wall.x += wind.params.forse
-            }
-            if (wind.params.Y) {
-                wall.y += wind.params.forse
-            }
-        })
-        renderAll()
-    }, 1000);
-}
-
-
 //Очистка + загрузка ареи 
 const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -410,12 +368,13 @@ const renderAll = () => {
             drawElement(e)
         })
     }
-    winds.forEach(e => {
-        addWindToPanel(e)
-        updateWindPanel(e)
-        drawElement(e)
-    })
-
+    if (!hideWindsCheckbox.checked) {
+        winds.forEach(e => {
+            addWindToPanel(e)
+            updateWindPanel(e)
+            drawElement(e)
+        })
+    }
     if (!hideWallsCheckbox.checked) {
         walls.forEach(e => {
             addWallToPanel(e)
@@ -427,7 +386,7 @@ const renderAll = () => {
 }
 
 renderAll()
-/*END OF REDRAW AREA*/
+/*END OF RENDER*/
 
 /* LISTENERS */
 
@@ -437,7 +396,6 @@ const elementChange = e => {
     renderAll()
 }
 
-
 const addWall = () => {
     const element = {
         x: canvasHeightInSquares / 2,
@@ -445,11 +403,10 @@ const addWall = () => {
         w: 15,
         h: 15,
         id: generateElementId(),
-    } 
+    }
     selectedElements.push(element)
     renderAll()
 }
-
 
 const addArea = () => {
     const element = {
@@ -459,7 +416,7 @@ const addArea = () => {
         h: 15,
         id: generateElementId(),
         params: {},
-    } 
+    }
 
     selectedElements.push(element)
     renderAll()
@@ -474,7 +431,7 @@ const addWind = () => {
         id: generateElementId(),
         params: { X: 0, Y: 0, forse: 0 },
         color: 'rgba(0,255,255,0.3)'
-    } 
+    }
     selectedElements.push(element)
     renderAll()
 }
