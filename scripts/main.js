@@ -7,6 +7,7 @@ var gridCheckbox = document.querySelector('input[id=toggleGrid]')
 var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
 var hideWindsCheckbox = document.querySelector('input[id=hideWinds]')
+var showAllElementsCheckbox = document.querySelector('input[id=showAllElements]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
@@ -44,23 +45,6 @@ const canvasHeightInSquares = gridSettings.squareHeight
 const generateElementId = () => selectedElements.length + 1 || 1
 
 /*END OF HELP FUNCTIONS */
-
-const showAllHideElements = e => {
-    if (!e.checked) return
-    if (!hideWallsCheckbox.checked) {
-        panelWalls.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
-        walls.forEach(e => e.hide = false)
-    }
-    if (!hideAreasCheckbox.checked) {
-        panelAreas.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
-        areas.forEach(e => e.hide = false)
-    }
-    if (!hideWindsCheckbox.checked) {
-        panelWinds.querySelectorAll('.game-panel-item__hide').forEach(e => e.classList.remove('active'))
-        winds.forEach(e => e.hide = false)
-    }
-    renderAll()
-}
 
 
 const hideElement = (e, elementId) => {
@@ -340,7 +324,9 @@ const renderGrid = e => {
 }
 
 const drawElement = element => {
-    if (element.hide) return
+    if (!showAllElementsCheckbox.checked) {
+        if (element.hide) return
+    }
     ctx.beginPath()
     ctx.rect(
         xCoordsToPixels(element.x),
@@ -363,6 +349,10 @@ const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     if (gridCheckbox.checked)
         renderGrid()
+
+    if (showAllElementsCheckbox.checked) {
+        
+    }
 
     if (!hideAreasCheckbox.checked) {
         areas.forEach(e => {
