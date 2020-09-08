@@ -34,7 +34,8 @@ const getDraggableElement = () => !!selectedElements ? selectedElements.find(e =
 const getSelectedWall = () => walls.find(a => a.active === true)
 const getSelectedArea = () => areas.find(a => a.active === true)
 const getSelectedWind = () => winds.find(w => w.active === true)
-const getAreaById = id => areas.find(area => area.id === id)
+const getAreaById = id => areas.find(el => el.id === id)
+const getWallById = id => walls.find(el => el.id === id)
 const getXPixelRatio = canvas.width / gridSettings.squareWidth
 const getYPixelRatio = canvas.height / gridSettings.squareHeight
 const xCoordsToPixels = coords => coords * getXPixelRatio
@@ -199,23 +200,23 @@ const addWallToPanel = wall => {
         <button class="game-panel-item__bern">
             bern
             <div class="game-panel-item__bern-settings">
-                <span>${wall.bern[0]}</span>
+                <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 0)">${wall.bern[0]}</span>
                 <div>
-                    <span>${wall.bern[1]}</span>
-                    <span>${wall.bern[2]}</span>
+                    <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 1)">${wall.bern[1]}</span>
+                    <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 2)">${wall.bern[2]}</span>
                 </div>
-                <span>${wall.bern[3]}</span>
+                <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 3)">${wall.bern[3]}</span>
             </div>
         </button>
         <button class="game-panel-item__thru">
             thru
             <div class="game-panel-item__thru-settings">
-                <span>${wall.thru[0]}</span>
+                <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 0)">${wall.thru[0]}</span>
                 <div>
-                    <span>${wall.thru[1]}</span>
-                    <span>${wall.thru[2]}</span>
+                    <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 1)">${wall.thru[1]}</span>
+                    <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 2)">${wall.thru[2]}</span>
                 </div>
-                <span>${wall.thru[3]}</span>
+                <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 3)">${wall.thru[3]}</span>
             </div>
         </button>
         <button class="game-panel-item__hide" onClick="hideElement(this, ${wall.id})">
@@ -226,6 +227,12 @@ const addWallToPanel = wall => {
         </button>
     </div>`
     )
+}
+
+const toggleWallSettings = (el, wallId, paramIndex) => {
+    el.classList.toggle('active')
+    const wall = getWallById(wallId)
+    wall[el.id][paramIndex] = !wall[el.id][paramIndex]
 }
 
 const addAreaToPanel = area => {
