@@ -11,7 +11,7 @@ var showAllElementsCheckbox = document.querySelector('input[id=showAllElements]'
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
-let gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"params":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"params":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["1","0","0","0"]},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false,"bern":["0","0","0","0"],"thru":["0","0","0","0"]}]}')
+var gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"params":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"params":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]}]}')
 var winds = [
     {
         x: 10, y: 30, w: 30, h: 30, id: 1,
@@ -229,12 +229,6 @@ const addWallToPanel = wall => {
     )
 }
 
-const toggleWallSettings = (el, wallId, paramIndex) => {
-    el.classList.toggle('active')
-    const wall = getWallById(wallId)
-    wall[el.id][paramIndex] = !wall[el.id][paramIndex]
-}
-
 const addAreaToPanel = area => {
     if (document.querySelector(`#area-${area.id}`)) return
     panelAreas.insertAdjacentHTML('beforeend',
@@ -336,6 +330,30 @@ const changeAreaColor = area => {
     area.color = `rgba(${r},${g},${b}, 0.3)`
 }
 
+const toggleWallSettings = (el, wallId, paramIndex) => {
+    el.classList.toggle('active')
+    const wall = getWallById(wallId)
+    wall[el.id][paramIndex] = !wall[el.id][paramIndex]
+    renderAll()
+}
+
+const drawWallSides = wall => {
+    let wallLength = wall.w > wall.h ? wall.w : wall.h
+    
+    ctx.beginPath()
+    if (wall.bern[0] === true) {
+        ctx.rect(
+            xCoordsToPixels(wall.x),
+            yCoordsToPixels(wall.y - 1),
+            xCoordsToPixels(wall.w),
+            yCoordsToPixels(wall.h)
+        );
+    }
+    ctx.fillStyle = '#ffc012';
+    ctx.fill()
+    ctx.closePath()
+}
+
 /*RENDER*/
 const renderGrid = e => {
     ctx.beginPath()
@@ -378,10 +396,6 @@ const renderAll = () => {
     if (gridCheckbox.checked)
         renderGrid()
 
-    if (showAllElementsCheckbox.checked) {
-        
-    }
-
     if (!hideAreasCheckbox.checked) {
         areas.forEach(e => {
             changeAreaColor(e)
@@ -399,6 +413,7 @@ const renderAll = () => {
     }
     if (!hideWallsCheckbox.checked) {
         walls.forEach(e => {
+            drawWallSides(e)
             addWallToPanel(e)
             updateWallPanel(e)
             drawElement(e)
