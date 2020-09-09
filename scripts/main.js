@@ -11,17 +11,10 @@ var showAllElementsCheckbox = document.querySelector('input[id=showAllElements]'
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
-var gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":false},"active":false},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":false,"params":{"x":true,"y":false,"coup":false},"active":false},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":false,"params":{"x":0,"y":true,"coup":false},"active":false},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":false,"params":{"x":0,"y":0,"coup":true},"active":false},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":false,"params":{"x":false,"y":true,"coup":true},"active":false},{"x":2,"y":22,"w":5,"h":5,"id":10,"color":"rgba(50,50,50,0.3)","params":{"coup":true,"x":true,"y":0},"hide":false}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":5,"h":1,"id":26,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":40,"w":1,"h":63,"id":28,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":false,"active":false,"bern":[0,0,0,0],"thru":[0,0,0,0]}]}')
-var winds = [
-    {
-        x: 10, y: 30, w: 30, h: 30, id: 1,
-        color: 'rgba(0,255,255,0.3)',
-        params: { X: 1, Y: 1, forse: 1 }
-    }
-]
-
+const gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
 var areas = gameObj.areas
 var walls = gameObj.walls
+var winds = gameObj.winds
 
 const gridSettings = {
     squareWidth: 100,
@@ -200,23 +193,23 @@ const addWallToPanel = wall => {
         <button class="game-panel-item__bern">
             bern
             <div class="game-panel-item__bern-settings">
-                <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 0)">↑</span>
+                <span class="${wall.bern[0] ? 'active' : ''}" id="bern" onClick="toggleWallSettings(this, ${wall.id}, 0)">↑</span>
                 <div>
-                    <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 1)">←</span>
-                    <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 2)">→</span>
+                    <span class="${wall.bern[1] ? 'active' : ''}" id="bern" onClick="toggleWallSettings(this, ${wall.id}, 1)">←</span>
+                    <span class="${wall.bern[2] ? 'active' : ''}" id="bern" onClick="toggleWallSettings(this, ${wall.id}, 2)">→</span>
                 </div>
-                <span id="bern" onClick="toggleWallSettings(this, ${wall.id}, 3)">↓</span>
+                <span class="${wall.bern[3] ? 'active' : ''}" id="bern" onClick="toggleWallSettings(this, ${wall.id}, 3)">↓</span>
             </div>
         </button>
         <button class="game-panel-item__thru">
             thru
             <div class="game-panel-item__thru-settings">
-                <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 0)">↑</span>
+                <span class="${wall.thru[0] ? 'active' : ''}" id="thru" onClick="toggleWallSettings(this, ${wall.id}, 0)">↑</span>
                 <div>
-                    <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 1)">←</span>
-                    <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 2)">→</span>
+                    <span class="${wall.thru[1] ? 'active' : ''}" id="thru" onClick="toggleWallSettings(this, ${wall.id}, 1)">←</span>
+                    <span class="${wall.thru[2] ? 'active' : ''}" id="thru" onClick="toggleWallSettings(this, ${wall.id}, 2)">→</span>
                 </div>
-                <span id="thru" onClick="toggleWallSettings(this, ${wall.id}, 3)">↓</span>
+                <span class="${wall.thru[3] ? 'active' : ''}" id="thru" onClick="toggleWallSettings(this, ${wall.id}, 3)">↓</span>
             </div>
         </button>
         <button class="game-panel-item__hide" onClick="hideElement(this, ${wall.id})">
@@ -333,7 +326,7 @@ const changeAreaColor = area => {
 const toggleWallSettings = (el, wallId, paramIndex) => {
     el.classList.toggle('active')
     const wall = getWallById(wallId)
-    wall[el.id][paramIndex] = !wall[el.id][paramIndex]
+    wall[el.id][paramIndex] = Number(!wall[el.id][paramIndex])
     renderAll()
 }
 
@@ -342,26 +335,52 @@ const drawWallSides = wall => {
         y = yCoordsToPixels(wall.y),
         w = xCoordsToPixels(wall.w),
         h = yCoordsToPixels(wall.h),
-        bernWidth = 3
+        bernWidth = 4
+        thruWidth = 2
 
     ctx.beginPath()
-    console.log(wall.bern[0] === true)
-    if (wall.bern[0] === true) {
-        ctx.rect(x, y - bernWidth, w, h);
+    if (wall.bern[0]) {
+        ctx.rect(x, y - bernWidth / 2, w, bernWidth);
     }
-    if (wall.bern[1] === true) {
-        ctx.rect(x - bernWidth, y, w, h);
+
+    if (wall.bern[1]) {
+        ctx.rect(x - bernWidth / 2, y, bernWidth, h);
     }
-    if (wall.bern[2] === true) {
-        ctx.rect(x, y, w + bernWidth, h);
+
+    if (wall.bern[2]) {
+        ctx.rect(x + w - bernWidth / 2, y, bernWidth, h);
     }
-    if (wall.bern[3] === true) {
-        ctx.rect(x, y, w, h + bernWidth);
+
+    if (wall.bern[3]) {
+        ctx.rect(x, y + h - bernWidth / 2, w, bernWidth);
     }
 
     ctx.fillStyle = '#ffc012';
     ctx.fill()
     ctx.closePath()
+
+    ctx.beginPath()
+
+    if (wall.thru[0]) {
+        ctx.rect(x, y - 1, w, thruWidth)
+    }
+
+    if (wall.thru[1]) {
+        ctx.rect(x - 1, y, thruWidth, h);
+    }
+
+    if (wall.thru[2]) {
+        ctx.rect(x + w - 1, y, thruWidth, h);
+    }
+
+    if (wall.thru[3]) {
+        ctx.rect(x, y + h - 1, w, thruWidth);
+    }
+
+    ctx.fillStyle = "#a6aaad"
+    ctx.fill()
+    ctx.closePath()
+
 }
 
 /*RENDER*/
@@ -380,6 +399,7 @@ const renderGrid = e => {
 }
 
 const drawElement = element => {
+    let fillColor = '#2c8fdb'
     if (!showAllElementsCheckbox.checked) {
         if (element.hide) return
     }
@@ -390,12 +410,17 @@ const drawElement = element => {
         xCoordsToPixels(element.w),
         yCoordsToPixels(element.h)
     )
-    if (element.active) {
+    //не стена
+    if (element.active && element.color) {
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 3
         ctx.stroke();
     }
     ctx.fillStyle = element.color || 'black'
+    //стена
+    if (element.active && !element.color) {
+        ctx.fillStyle = fillColor
+    }
     ctx.fill()
     ctx.closePath()
 }
@@ -425,8 +450,8 @@ const renderAll = () => {
         walls.forEach(e => {
             addWallToPanel(e)
             updateWallPanel(e)
-            drawWallSides(e)
             drawElement(e)
+            drawWallSides(e)
         }
         )
     }
@@ -447,9 +472,11 @@ const addWall = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
-        w: 15,
+        w: 1,
         h: 15,
         id: generateElementId(),
+        bern: [0,0,0,0],
+        thru: [0,0,0,0]
     }
     selectedElements.push(element)
     renderAll()
@@ -511,6 +538,50 @@ const takeDraggableElement = e => {
             break
         }
     }
+
+    // for (let i = 0; i < elements.length; i++) {
+    //     if (elements[i].hide)
+    //         continue
+
+    //     const elXStart = xCoordsToPixels(elements[i].x)
+    //     const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
+    //     const elYStart = xCoordsToPixels(elements[i].y)
+    //     const elYEnd = elYStart + xCoordsToPixels(elements[i].h)
+
+    //     if (xStartFoDrug > elXStart &&
+    //         xStartFoDrug < elXEnd &&
+    //         yStartFoDrug > elYStart &&
+    //         yStartFoDrug < elYEnd) {
+    //         elements[i].active = true
+    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${elements[i].id}`))
+    //         elements[i].draggable = true
+    //         elements[i].xStatr = elements[i].x
+    //         elements[i].yStatr = elements[i].y
+    //         break
+    //     }
+    // }
+
+    // for (let i = 0; i < winds.length; i++) {
+    //     if (winds[i].hide)
+    //         continue
+
+    //     const elXStart = xCoordsToPixels(winds[i].x)
+    //     const elXEnd = elXStart + xCoordsToPixels(winds[i].w)
+    //     const elYStart = xCoordsToPixels(winds[i].y)
+    //     const elYEnd = elYStart + xCoordsToPixels(winds[i].h)
+
+    //     if (xStartFoDrug > elXStart &&
+    //         xStartFoDrug < elXEnd &&
+    //         yStartFoDrug > elYStart &&
+    //         yStartFoDrug < elYEnd) {
+    //         winds[i].active = true
+    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${winds[i].id}`))
+    //         winds[i].draggable = true
+    //         winds[i].xStatr = winds[i].x
+    //         winds[i].yStatr = winds[i].y
+    //         break
+    //     }
+    // }
 
     if (!getSelectedElement() && selectedPanelItem) setSelectedPanelItem(null)
 
