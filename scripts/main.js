@@ -338,17 +338,27 @@ const toggleWallSettings = (el, wallId, paramIndex) => {
 }
 
 const drawWallSides = wall => {
-    let wallLength = wall.w > wall.h ? wall.w : wall.h
-    
+    let x = xCoordsToPixels(wall.x),
+        y = yCoordsToPixels(wall.y),
+        w = xCoordsToPixels(wall.w),
+        h = yCoordsToPixels(wall.h),
+        bernWidth = 3
+
     ctx.beginPath()
+    console.log(wall.bern[0] === true)
     if (wall.bern[0] === true) {
-        ctx.rect(
-            xCoordsToPixels(wall.x),
-            yCoordsToPixels(wall.y - 1),
-            xCoordsToPixels(wall.w),
-            yCoordsToPixels(wall.h)
-        );
+        ctx.rect(x, y - bernWidth, w, h);
     }
+    if (wall.bern[1] === true) {
+        ctx.rect(x - bernWidth, y, w, h);
+    }
+    if (wall.bern[2] === true) {
+        ctx.rect(x, y, w + bernWidth, h);
+    }
+    if (wall.bern[3] === true) {
+        ctx.rect(x, y, w, h + bernWidth);
+    }
+
     ctx.fillStyle = '#ffc012';
     ctx.fill()
     ctx.closePath()
@@ -413,9 +423,9 @@ const renderAll = () => {
     }
     if (!hideWallsCheckbox.checked) {
         walls.forEach(e => {
-            drawWallSides(e)
             addWallToPanel(e)
             updateWallPanel(e)
+            drawWallSides(e)
             drawElement(e)
         }
         )
