@@ -523,9 +523,9 @@ const takeDraggableElement = e => {
 
         const elXStart = xCoordsToPixels(elements[i].x)
         const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
-        const elYStart = xCoordsToPixels(elements[i].y)
-        const elYEnd = elYStart + xCoordsToPixels(elements[i].h)
-
+        const elYStart = yCoordsToPixels(elements[i].y) - window.pageYOffset
+        const elYEnd = elYStart + yCoordsToPixels(elements[i].h)
+        console.log(yStartFoDrug > elYStart)
         if (xStartFoDrug > elXStart &&
             xStartFoDrug < elXEnd &&
             yStartFoDrug > elYStart &&
