@@ -1,13 +1,34 @@
+$green-color: #42f56f
+$green-darker-color: #34ba61
+$red-color: #db2a16
+
 * 
     padding: 0
     margin: 0
+
+body 
+    font-family: Arial, Helvetica, sans-serif
 
 
 .root
     padding: 15px
 
+
+button
+    border: 1px solid #000
+    margin: 0 5px
+    color: #fff
+    border-radius: 3px
+    background: $green-color
+    padding: 5px
+    &.active 
+        background: $red-color
+
+
 .game-area 
     &__ctx 
+        width: 500px
+        height: 600px
         border: 1px solid #000
 
 
@@ -21,69 +42,128 @@
     &__settings
         margin-bottom: 15px
 
-    &__tabs
-        
-        input[type="radio"]
-            display: none
+    
 
-        input[type="radio"]:checked+label 
-            background-color: #fff
-            border-bottom: 1px solid #fff
-
-        label
-            display: inline-block
-            text-align: center
-            vertical-align: middle
-            user-select: none
-            background-color: #f5f5f5
-            border: 1px solid #e0e0e0
-            padding: 2px 8px
-            font-size: 16px
-            line-height: 1.5
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out
-            cursor: pointer
-            position: relative
-            top: 1px
-
-        section
-            display: none
-            border: 1px solid #e0e0e0
-            padding: 10px 15px
-            font-size: 16px
-
-        #tab-btn-1:checked~.game-panel__walls,
-        #tab-btn-2:checked~.game-panel__wind,
-        #tab-btn-3:checked~.game-panel__areas 
-            display: block
+.game-panel-tabs
+    
+    &__label
+        display: inline-block
+        text-align: center
+        vertical-align: middle
+        user-select: none
+        background-color: #f5f5f5
+        border: 1px solid #e0e0e0
+        padding: 2px 8px
+        font-size: 16px
+        line-height: 1.5
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out
+        cursor: pointer
+        position: relative
+        top: 1px
 
 
+    section
+        display: none
+        border: 1px solid #e0e0e0
+        padding: 10px 15px
+        font-size: 16px
 
+    #settings:checked~.game-panel__settings,
+    #walls:checked~.game-panel__walls,
+    #areas:checked~.game-panel__areas,
+    #winds:checked~.game-panel__winds 
+        display: block
 
-.game-panel-wall
+    input[type="radio"]
+        display: none
+
+    input[type="radio"]:checked+label 
+        background-color: #fff
+        border-bottom: 1px solid #fff
+    
+.game-panel-settings
+    &__item 
+        padding: 5px
+
+.game-panel-item
     display: flex
     flex-wrap: wrap
-    margin: 10px 5px
+    align-items: center
+    margin: 10px 0
     padding: 5px
-    border: 2px solid 
+    border: 1px solid 
 
     &.active 
         border-color: red
 
     input  
-        width: 100%
+        max-height: 15px
+        margin-left: 5px
         max-width: 50px
 
-    &__coords
+
+    &__coords, &__size, &__params 
+        padding: 5px
         display: flex
 
         span 
             margin: 0 5px
 
-    &__size 
-        display: flex
+    &__newElement
+        margin: 0
 
-        span 
+    &__delete
+        background: $red-color
+
+    &__params 
+        display: flex
+        div
+            padding: 0 5px
+            border: 1px solid #000
+            display: flex
+            align-items: center
+            justify-content: center
             margin: 0 5px
-    
-        
+
+    &__bern, &__thru
+        position: relative
+
+        &-settings
+            width: 80px
+            border: 4px solid $green-color
+            padding: 3px
+            top: -33px
+            left: -33px
+            border-radius: 3px
+            background: $green-darker-color
+            background: 
+            position: absolute
+            z-index: 1
+            display: none
+            flex-direction: column
+
+            div 
+                display: flex
+                justify-content: space-between
+                span 
+                    width: 100%
+
+            span 
+                font-size: 18px
+                padding: 2px 5px
+                margin: 2px
+                border: 1px solid #fff
+                background: #000
+                &.active 
+                    background: $red-color
+
+    &__bern 
+        &:focus 
+            .game-panel-item__bern-settings
+                display: flex
+
+    &__thru 
+        &:focus 
+            .game-panel-item__thru-settings
+                display: flex
 
