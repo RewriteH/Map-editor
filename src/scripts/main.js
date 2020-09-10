@@ -8,6 +8,8 @@ var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
 var hideWindsCheckbox = document.querySelector('input[id=hideWinds]')
 var showAllElementsCheckbox = document.querySelector('input[id=showAllElements]')
+var switchTabCheckbox = document.querySelector('input[id=switchTab]')
+var bumpElementCheckbox = document.querySelector('input[id=bumpElement]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
@@ -115,7 +117,7 @@ const changePanelTab = () => {
 
 const bumpPanelElement = () => {
     if (activeElement) {
-        [...document.querySelectorAll('.game-panel-item')].forEach(e => e.remove())
+        [...document.querySelectorAll(`.game-panel-${selectedPanelTab}s__item`)].forEach(e => e.remove())
         const elementToSwap = selectedElements[0]
         const indexToSwap = selectedElements.indexOf(activeElement)
         selectedElements[0] = activeElement
@@ -176,12 +178,12 @@ const removeSelectedItem = () => {
 
 const setSelectedElement = e => {
     removeSelectedItem()
-    setSelectedPanelItem(e)
     selectedElements.forEach(element => {
         if (e.id === `${selectedPanelTab}-${element.id}`) {
             activeElement = element
         }
     })
+    setSelectedPanelItem(e)
     renderAll()
 }
 
@@ -286,7 +288,7 @@ const addWindToPanel = wind => {
     if (document.querySelector(`#wind-${wind.id}`)) return
     panelWinds.insertAdjacentHTML('beforeend',
         `<div 
-        class="game-panel-wind__item game-panel-item"
+        class="game-panel-winds__item game-panel-item"
         id="wind-${wind.id}"
         onmousedown="setSelectedElement(this)"
     >
@@ -526,45 +528,18 @@ const addWind = () => {
     renderAll()
 }
 
-canvas.onmousedown = e => {
+
+const takeDraggableElement = e => {
     xStartFoDrug = e.clientX - canvas.offsetTop;
     yStartFoDrug = e.clientY - canvas.offsetLeft;
 
     removeSelectedItem()
 
-    let elements = [...walls, ...areas, ...winds]
-    for (let i = 0; i < elements.length; i++) {
-        if (elements[i].hide)
-            continue
+    let elements = selectedElements
 
-        const elXStart = xCoordsToPixels(elements[i].x) - window.pageXOffset
-        const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
-        const elYStart = yCoordsToPixels(elements[i].y) - window.pageYOffset
-        const elYEnd = elYStart + yCoordsToPixels(elements[i].h)
-        if (xStartFoDrug > elXStart &&
-            xStartFoDrug < elXEnd &&
-            yStartFoDrug > elYStart &&
-            yStartFoDrug < elYEnd) {
-            activeElement = elements[i]
-            draggableElement = elements[i]
-            elements[i].xStatr = elements[i].x
-            elements[i].yStatr = elements[i].y
-            break
-        }
-    }
+    if (switchTabCheckbox.checked) 
+        elements = [...walls, ...areas, ...winds]
 
-    changePanelTab()
-    bumpPanelElement()
-    setSelectedPanelItem()
-
-    if (!activeElement && selectedPanelItem) setSelectedPanelItem(null)
-}
-
-
-const takeDraggableElement = e => {
-    xStartFoDrug = e.clientX - canvas.offsetTop;
-    yStartFoDrug = e.clientY - canvas.offsetLeft;
-    const elements = selectedElements
     if (!elements) return
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].hide)
@@ -580,60 +555,21 @@ const takeDraggableElement = e => {
             yStartFoDrug < elYEnd) {
             activeElement = elements[i]
             draggableElement = elements[i]
-            setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${elements[i].id}`))
             elements[i].xStatr = elements[i].x
             elements[i].yStatr = elements[i].y
             break
         }
     }
 
-    // for (let i = 0; i < areas.length; i++) {
-    //     if (areas[i].hide)
-    //         continue
+    if (switchTabCheckbox.checked) 
+        changePanelTab()
 
-    //     const elXStart = xCoordsToPixels(areas[i].x)
-    //     const elXEnd = elXStart + xCoordsToPixels(areas[i].w)
-    //     const elYStart = xCoordsToPixels(areas[i].y)
-    //     const elYEnd = elYStart + xCoordsToPixels(areas[i].h)
+    if (bumpElementCheckbox.checked) 
+        bumpPanelElement()
 
-    //     if (xStartFoDrug > elXStart &&
-    //         xStartFoDrug < elXEnd &&
-    //         yStartFoDrug > elYStart &&
-    //         yStartFoDrug < elYEnd) {
-    //         areas[i].active = true
-    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${areas[i].id}`))
-    //         areas[i].draggable = true
-    //         areas[i].xStatr = areas[i].x
-    //         areas[i].yStatr = areas[i].y
-    //         break
-    //     }
-    // }
-
-    // for (let i = 0; i < winds.length; i++) {
-    //     if (winds[i].hide)
-    //         continue
-
-    //     const elXStart = xCoordsToPixels(winds[i].x)
-    //     const elXEnd = elXStart + xCoordsToPixels(winds[i].w)
-    //     const elYStart = xCoordsToPixels(winds[i].y)
-    //     const elYEnd = elYStart + xCoordsToPixels(winds[i].h)
-
-    //     if (xStartFoDrug > elXStart &&
-    //         xStartFoDrug < elXEnd &&
-    //         yStartFoDrug > elYStart &&
-    //         yStartFoDrug < elYEnd) {
-    //         winds[i].active = true
-    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${winds[i].id}`))
-    //         winds[i].draggable = true
-    //         winds[i].xStatr = winds[i].x
-    //         winds[i].yStatr = winds[i].y
-    //         break
-    //     }
-    // }
+    setSelectedPanelItem()
 
     if (!activeElement && selectedPanelItem) setSelectedPanelItem(null)
-
-    renderAll()
 }
 
 function xPixelsToCoords(xPx) { return Math.round(xPx / getXPixelRatio) }
@@ -717,7 +653,7 @@ const dropDraggableElement = () => {
     }
 }
 
-// canvas.addEventListener('mousedown', takeDraggableElement)
+canvas.addEventListener('mousedown', takeDraggableElement)
 
 canvas.addEventListener('mousemove', dragElement)
 
