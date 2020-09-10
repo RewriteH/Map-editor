@@ -43,7 +43,6 @@ gulp.task('deploy', function() {
     .pipe(deploy())
 })
 
-
 gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
