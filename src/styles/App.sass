@@ -27,8 +27,7 @@ button
 
 .game-area 
     &__ctx 
-        width: 500px
-        height: 600px
+        user-select: none
         border: 1px solid #000
 
 
@@ -71,7 +70,8 @@ button
     #settings:checked~.game-panel__settings,
     #walls:checked~.game-panel__walls,
     #areas:checked~.game-panel__areas,
-    #winds:checked~.game-panel__winds 
+    #winds:checked~.game-panel__winds,
+    #levels:checked~.game-panel__levels
         display: block
 
     input[type="radio"]

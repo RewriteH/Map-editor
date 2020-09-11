@@ -19,8 +19,7 @@ button {
     background: #db2a16; }
 
 .game-area__ctx {
-  width: 500px;
-  height: 600px;
+  user-select: none;
   border: 1px solid #000; }
 
 .game-panel {
@@ -56,7 +55,8 @@ button {
 .game-panel-tabs #settings:checked ~ .game-panel__settings,
 .game-panel-tabs #walls:checked ~ .game-panel__walls,
 .game-panel-tabs #areas:checked ~ .game-panel__areas,
-.game-panel-tabs #winds:checked ~ .game-panel__winds {
+.game-panel-tabs #winds:checked ~ .game-panel__winds,
+.game-panel-tabs #levels:checked ~ .game-panel__levels {
   display: block; }
 
 .game-panel-tabs input[type="radio"] {

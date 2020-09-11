@@ -3,6 +3,7 @@ var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel-walls')
 var panelAreas = document.querySelector('.game-panel-areas')
 var panelWinds = document.querySelector('.game-panel-winds')
+var panelLevels = document.querySelector('.game-panel-levels')
 var gridCheckbox = document.querySelector('input[id=toggleGrid]')
 var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
@@ -15,10 +16,12 @@ var selectedPanelTab = null
 var selectedElements = null
 var draggableElement;
 var activeElement;
-const gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
-var areas = gameObj.areas
-var walls = gameObj.walls
-var winds = gameObj.winds
+localStorage.setItem('level-1', '{"id": 1, "areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
+var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
+var gameObj;
+var areas;
+var walls;
+var winds;
 
 const gridSettings = {
     squareWidth: 100,
@@ -35,6 +38,8 @@ const yCoordsToPixels = coords => coords * getYPixelRatio
 const canvasWidthInSquares = gridSettings.squareWidth
 const canvasHeightInSquares = gridSettings.squareHeight
 const generateElementId = () => selectedElements.length + 1 || 1
+const generateLevelId = () => JSON.parse(localStorage.getItem(`level-${localStorage.length}`)).id + 1
+const getAllLevels = () => Object.keys(localStorage).map(lvl => JSON.parse(localStorage.getItem(lvl)))
 /*END OF HELP FUNCTIONS */
 
 
@@ -62,6 +67,8 @@ const copyElement = elementId => {
             id: generateElementId()
         }
     }
+
+    if (selectedElements === localStorage) {}
     selectedElements.push(element)
     renderAll()
 }
@@ -98,9 +105,13 @@ const setSelectedTab = e => {
         selectedElements = winds
         selectedPanelTab = 'wind'
     }
+    else if (e.id === 'levels') {
+        selectedElements = getAllLevels()
+        selectedPanelTab = 'level'
+    }
 }
 
-const changePanelTab = () => {
+const switchPanelTab = () => {
     if (areas.includes(activeElement)) {
         document.querySelector('#areas').checked = true
         setSelectedTab({ id: 'areas' })
@@ -166,6 +177,7 @@ const setSelectedPanelItem = e => {
         selectedPanelItem.classList.remove('active')
     }
     if (activeElement) {
+        console.log(selectedPanelTab, activeElement)
         selectedPanelItem = document.querySelector(`#${selectedPanelTab}-${activeElement.id}`)
         selectedPanelItem.classList.add('active')
     }
@@ -177,14 +189,16 @@ const removeSelectedItem = () => {
 }
 
 const setSelectedElement = e => {
-    removeSelectedItem()
-    selectedElements.forEach(element => {
-        if (e.id === `${selectedPanelTab}-${element.id}`) {
-            activeElement = element
-        }
-    })
+    activeElement = selectedElements.find(element => 
+        e.id === `${selectedPanelTab}-${element.id}`
+    )
     setSelectedPanelItem(e)
     renderAll()
+}
+
+const setSelectedLevel = e => {
+    selectedLevel = getAllLevels().find(lvl => `level-${lvl.id}` === e.id)
+    loadLevels()
 }
 
 const addWallToPanel = wall => {
@@ -323,6 +337,25 @@ const addWindToPanel = wind => {
     )
 }
 
+const addLevelToPanel = level => {
+    if (document.querySelector(`#level-${level.id}`)) return
+    panelLevels.insertAdjacentHTML('beforeend',
+        `<div 
+            class="game-panel-levels__item game-panel-item"
+            id="level-${level.id}"
+            onmousedown="setSelectedLevel(this)"
+        >
+            <div>${level.id}</div>
+            <button class="game-panel-item__copy" onClick="copyElement(${level.id})">
+                Copy
+            </button>
+            <button class="game-panel-item__delete" onClick="deleteElement(${level.id})">
+                Delete
+            </button>
+        </div>`
+    )
+}
+
 const coupArea = (e, areaId) => {
     e.classList.toggle('active')
     const area = getAreaById(areaId)
@@ -416,6 +449,21 @@ const renderGrid = e => {
     ctx.closePath()
 }
 
+const loadLevels = () => {
+    gameObj = JSON.parse(localStorage.getItem(`level-${selectedLevel.id}`))
+    walls = gameObj.walls
+    areas = gameObj.areas
+    winds = gameObj.winds
+
+    //очистка панелей прежнего левела
+
+    getAllLevels().forEach(lvl => 
+        addLevelToPanel(lvl)
+    )
+
+    renderAll()
+}
+
 const drawElement = element => {
     let fillColor = '#2c8fdb'
     if (!showAllElementsCheckbox.checked) {
@@ -444,8 +492,13 @@ const drawElement = element => {
 }
 
 //Очистка + загрузка ареи 
+
 const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    //сохранение каждого изменения
+    localStorage.setItem(`level-${selectedLevel.id}`, JSON.stringify(gameObj))
+
     if (gridCheckbox.checked)
         renderGrid()
 
@@ -475,6 +528,7 @@ const renderAll = () => {
     }
 }
 
+loadLevels()
 renderAll()
 /*END OF RENDER*/
 
@@ -486,7 +540,7 @@ const elementChange = e => {
     renderAll()
 }
 
-const addWall = () => {
+const createWall = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
@@ -500,7 +554,7 @@ const addWall = () => {
     renderAll()
 }
 
-const addArea = () => {
+const createArea = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
@@ -514,7 +568,7 @@ const addArea = () => {
     renderAll()
 }
 
-const addWind = () => {
+const createWind = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
@@ -528,6 +582,12 @@ const addWind = () => {
     renderAll()
 }
 
+const createLevel = () => {
+    gameObj = {id: generateLevelId(), walls: [], areas: [], winds: []}
+    localStorage.setItem(`level-${gameObj.id}`, JSON.stringify(gameObj))
+    loadLevels()
+    renderAll()
+}
 
 const takeDraggableElement = e => {
     xStartFoDrug = e.clientX - canvas.offsetTop;
@@ -562,7 +622,7 @@ const takeDraggableElement = e => {
     }
 
     if (switchTabCheckbox.checked) 
-        changePanelTab()
+        switchPanelTab()
 
     if (bumpElementCheckbox.checked) 
         bumpPanelElement()
