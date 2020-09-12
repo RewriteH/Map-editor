@@ -1,20 +1,28 @@
+
 var canvas = document.querySelector('.game-area__ctx')
 var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel-walls')
 var panelAreas = document.querySelector('.game-panel-areas')
 var panelWinds = document.querySelector('.game-panel-winds')
+var panelLevels = document.querySelector('.game-panel-levels')
 var gridCheckbox = document.querySelector('input[id=toggleGrid]')
 var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
 var hideWindsCheckbox = document.querySelector('input[id=hideWinds]')
 var showAllElementsCheckbox = document.querySelector('input[id=showAllElements]')
+var switchTabCheckbox = document.querySelector('input[id=switchTab]')
+var bumpElementCheckbox = document.querySelector('input[id=bumpElement]')
 var selectedPanelItem = null
 var selectedPanelTab = null
 var selectedElements = null
-const gameObj = JSON.parse('{"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
-var areas = gameObj.areas
-var walls = gameObj.walls
-var winds = gameObj.winds
+var draggableElement;
+var activeElement;
+localStorage.setItem('level-1', '{"id":1,"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
+var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
+var gameObj;
+var areas;
+var walls;
+var winds;
 
 const gridSettings = {
     squareWidth: 100,
@@ -22,21 +30,17 @@ const gridSettings = {
 }
 
 /*HELP FUNCTIONS */
-const getSelectedElement = () => !!selectedElements ? selectedElements.find(e => e.active === true) : null
-const getDraggableElement = () => !!selectedElements ? selectedElements.find(e => e.draggable === true) : null
-const getSelectedWall = () => walls.find(a => a.active === true)
-const getSelectedArea = () => areas.find(a => a.active === true)
-const getSelectedWind = () => winds.find(w => w.active === true)
 const getAreaById = id => areas.find(el => el.id === id)
 const getWallById = id => walls.find(el => el.id === id)
-const getXPixelRatio = canvas.width / gridSettings.squareWidth
-const getYPixelRatio = canvas.height / gridSettings.squareHeight
+const getXPixelRatio = canvas.width  / gridSettings.squareWidth
+const getYPixelRatio = canvas.height  / gridSettings.squareHeight
 const xCoordsToPixels = coords => coords * getXPixelRatio
 const yCoordsToPixels = coords => coords * getYPixelRatio
 const canvasWidthInSquares = gridSettings.squareWidth
 const canvasHeightInSquares = gridSettings.squareHeight
 const generateElementId = () => selectedElements.length + 1 || 1
-
+const generateLevelId = () => localStorage.length + 1
+const getAllLevels = () => Object.keys(localStorage).map(lvl => JSON.parse(localStorage.getItem(lvl)))
 /*END OF HELP FUNCTIONS */
 
 
@@ -54,8 +58,6 @@ const copyElement = elementId => {
     if (selectedElements === walls) {
         element = {
             ...copiedElement[0],
-            active: false,
-            draggable: false,
             id: generateElementId()
         }
     }
@@ -63,11 +65,10 @@ const copyElement = elementId => {
         element = {
             ...copiedElement[0],
             params: { ...copiedElement[0].params },
-            active: false,
-            draggable: false,
             id: generateElementId()
         }
     }
+
     selectedElements.push(element)
     renderAll()
 }
@@ -77,6 +78,25 @@ const deleteElement = elementId => {
     selectedElements.splice(index, 1)
     document.querySelector(`#${selectedPanelTab}-${elementId}`).remove()
     renderAll()
+}
+
+const copyLevel = levelId => {
+    const copiedLevel = JSON.parse(localStorage.getItem('level-' + levelId))
+    const level = { ...copiedLevel, id: generateLevelId() }
+    localStorage.setItem('level-' + level.id, JSON.stringify(level))
+    addLevelToPanel(level)
+}
+
+const deleteLevel = levelId => {
+    if (selectedLevel.id === levelId) return
+    localStorage.removeItem('level-' + levelId)
+    panelLevels.querySelector('#level-' + levelId).remove()
+    loadLevels()
+}
+
+const saveLevelChanges = levelId => {
+    if (selectedLevel.id !== levelId) return
+    localStorage.setItem('level-' + levelId, JSON.stringify(gameObj))
 }
 
 const toggleAreaParams = (areaId, el) => {
@@ -100,9 +120,38 @@ const setSelectedTab = e => {
         selectedElements = areas
         selectedPanelTab = 'area'
     }
-    else if (e.id === 'wind') {
+    else if (e.id === 'winds') {
         selectedElements = winds
         selectedPanelTab = 'wind'
+    }
+    else if (e.id === 'levels') {
+        selectedPanelTab = 'level'
+    }
+}
+
+const switchPanelTab = () => {
+    if (areas.includes(activeElement)) {
+        document.querySelector('#areas').checked = true
+        setSelectedTab({ id: 'areas' })
+    }
+    if (walls.includes(activeElement)) {
+        document.querySelector('#walls').checked = true
+        setSelectedTab({ id: 'walls' })
+    }
+    if (winds.includes(activeElement)) {
+        document.querySelector('#winds').checked = true
+        setSelectedTab({ id: 'winds' })
+    }
+}
+
+const bumpPanelElement = () => {
+    if (activeElement) {
+        [...document.querySelectorAll(`.game-panel-${selectedPanelTab}s__item`)].forEach(e => e.remove())
+        const elementToSwap = selectedElements[0]
+        const indexToSwap = selectedElements.indexOf(activeElement)
+        selectedElements[0] = activeElement
+        selectedElements[indexToSwap] = elementToSwap
+        renderAll()
     }
 }
 
@@ -145,27 +194,45 @@ const setSelectedPanelItem = e => {
     if (selectedPanelItem) {
         selectedPanelItem.classList.remove('active')
     }
-    selectedPanelItem = e
-    selectedPanelItem.classList.add('active')
+    if (activeElement) {
+        selectedPanelItem = document.querySelector(`#${selectedPanelTab}-${activeElement.id}`)
+        selectedPanelItem.classList.add('active')
+    }
+}
+
+const setSelectedPanelLevel = levelId => {
+    const selectedPanelLevel = panelLevels.querySelector('.game-panel-item.active')
+
+    if (selectedPanelLevel) {
+        selectedPanelLevel.classList.remove('active')
+    }
+
+    document.querySelector(`#level-${levelId}`).classList.add('active')
+
+}
+
+const setSelectedLevel = levelId => {
+    //очистка панелей прежнего уровня
+    [...document.querySelectorAll(`.game-panel-walls__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-areas__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-winds__item`)].forEach(e => e.remove());
+
+    selectedLevel = getAllLevels().find(lvl => lvl.id === levelId);
+
+    setSelectedPanelLevel(levelId)
+    loadLevels()
 }
 
 const removeSelectedItem = () => {
-    const wall = getSelectedWall()
-    const area = getSelectedArea()
-    const wind = getSelectedWind()
-    if (wall) wall.active = false
-    if (area) area.active = false
-    if (wind) wind.active = false
+    activeElement = null
+    renderAll()
 }
 
 const setSelectedElement = e => {
-    removeSelectedItem()
+    activeElement = selectedElements.find(element =>
+        e.id === `${selectedPanelTab}-${element.id}`
+    )
     setSelectedPanelItem(e)
-    selectedElements.forEach(element => {
-        if (e.id === `${selectedPanelTab}-${element.id}`) {
-            element.active = true
-        } else { element.active = false }
-    })
     renderAll()
 }
 
@@ -270,7 +337,7 @@ const addWindToPanel = wind => {
     if (document.querySelector(`#wind-${wind.id}`)) return
     panelWinds.insertAdjacentHTML('beforeend',
         `<div 
-        class="game-panel-wind__item game-panel-item"
+        class="game-panel-winds__item game-panel-item"
         id="wind-${wind.id}"
         onmousedown="setSelectedElement(this)"
     >
@@ -305,6 +372,30 @@ const addWindToPanel = wind => {
     )
 }
 
+const addLevelToPanel = level => {
+    if (document.querySelector(`#level-${level.id}`)) return
+    panelLevels.insertAdjacentHTML('beforeend',
+        `<div 
+            class="game-panel-levels__item game-panel-item ${selectedLevel.id === level.id ? 'active' : ''}"
+            id="level-${level.id}"
+        >
+            <div>${level.id}</div>
+            <button class="game-panel-item__save" onClick="saveLevelChanges(${level.id})">
+                Save
+            </button>
+            <button onmousedown="setSelectedLevel(${level.id})" class="game-panel-item__save">
+                Zagruzit'
+            </button>
+            <button class="game-panel-item__copy" onClick="copyLevel(${level.id})">
+                Copy
+            </button>
+            <button class="game-panel-item__delete" onClick="deleteLevel(${level.id})">
+                Delete
+            </button>
+        </div>`
+    )
+}
+
 const coupArea = (e, areaId) => {
     e.classList.toggle('active')
     const area = getAreaById(areaId)
@@ -336,7 +427,7 @@ const drawWallSides = wall => {
         w = xCoordsToPixels(wall.w),
         h = yCoordsToPixels(wall.h),
         bernWidth = 4
-        thruWidth = 2
+    thruWidth = 2
 
     ctx.beginPath()
     if (wall.bern[0]) {
@@ -386,8 +477,8 @@ const drawWallSides = wall => {
 /*RENDER*/
 const renderGrid = e => {
     ctx.beginPath()
-    const w = canvas.width - 2
-    const h = canvas.height - 2
+    const w = canvas.width 
+    const h = canvas.height 
     const squareWidth = w / gridSettings.squareWidth
     const squareHeight = h / gridSettings.squareHeight
     ctx.strokeStyle = '#bdbdbd'
@@ -396,6 +487,22 @@ const renderGrid = e => {
     for (var y = squareHeight; y < h; y += squareHeight) ctx.strokeRect(0, y, w, 0.1)
     ctx.fill()
     ctx.closePath()
+}
+
+const loadLevels = () => {
+    gameObj = JSON.parse(localStorage.getItem(`level-${selectedLevel.id}`))
+    if (!gameObj) return
+    walls = gameObj.walls
+    areas = gameObj.areas
+    winds = gameObj.winds
+
+    const levels = getAllLevels().sort((a,b) => a.id - b.id)
+
+    levels.forEach(lvl =>
+        addLevelToPanel(lvl)
+    )
+
+    renderAll()
 }
 
 const drawElement = element => {
@@ -411,14 +518,14 @@ const drawElement = element => {
         yCoordsToPixels(element.h)
     )
     //не стена
-    if (element.active && element.color) {
+    if (element === activeElement && element.color) {
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 3
         ctx.stroke();
     }
     ctx.fillStyle = element.color || 'black'
     //стена
-    if (element.active && !element.color) {
+    if (element === activeElement && !element.color) {
         ctx.fillStyle = fillColor
     }
     ctx.fill()
@@ -426,8 +533,12 @@ const drawElement = element => {
 }
 
 //Очистка + загрузка ареи 
+
 const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    //сохранение каждого изменения
+
     if (gridCheckbox.checked)
         renderGrid()
 
@@ -457,32 +568,33 @@ const renderAll = () => {
     }
 }
 
+loadLevels()
 renderAll()
 /*END OF RENDER*/
 
 /* LISTENERS */
 
 const elementChange = e => {
-    const element = getSelectedElement()
+    const element = activeElement
     element[e.name] = +e.value
     renderAll()
 }
 
-const addWall = () => {
+const createWall = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
         w: 1,
         h: 15,
         id: generateElementId(),
-        bern: [0,0,0,0],
-        thru: [0,0,0,0]
+        bern: [0, 0, 0, 0],
+        thru: [0, 0, 0, 0]
     }
     selectedElements.push(element)
     renderAll()
 }
 
-const addArea = () => {
+const createArea = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
@@ -496,7 +608,7 @@ const addArea = () => {
     renderAll()
 }
 
-const addWind = () => {
+const createWind = () => {
     const element = {
         x: canvasHeightInSquares / 2,
         y: canvasWidthInSquares / 2,
@@ -510,80 +622,54 @@ const addWind = () => {
     renderAll()
 }
 
+const createLevel = () => {
+    newLevel = { id: generateLevelId(), walls: [], areas: [], winds: [] }
+    localStorage.setItem(`level-${newLevel.id}`, JSON.stringify(newLevel))
+    addLevelToPanel(newLevel)
+}
 
 const takeDraggableElement = e => {
     xStartFoDrug = e.clientX - canvas.offsetTop;
     yStartFoDrug = e.clientY - canvas.offsetLeft;
+
     removeSelectedItem()
-    const elements = selectedElements
+
+    let elements = selectedElements
+
+    if (switchTabCheckbox.checked)
+        elements = [...walls, ...areas, ...winds]
+
     if (!elements) return
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].hide)
             continue
 
-        const elXStart = xCoordsToPixels(elements[i].x)
+        const elXStart = xCoordsToPixels(elements[i].x) - window.pageXOffset
         const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
         const elYStart = yCoordsToPixels(elements[i].y) - window.pageYOffset
         const elYEnd = elYStart + yCoordsToPixels(elements[i].h)
-        console.log(yStartFoDrug > elYStart)
         if (xStartFoDrug > elXStart &&
             xStartFoDrug < elXEnd &&
             yStartFoDrug > elYStart &&
             yStartFoDrug < elYEnd) {
-            elements[i].active = true
-            setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${elements[i].id}`))
-            elements[i].draggable = true
+            activeElement = elements[i]
+
+            draggableElement = elements[i]
             elements[i].xStatr = elements[i].x
             elements[i].yStatr = elements[i].y
             break
         }
     }
 
-    // for (let i = 0; i < elements.length; i++) {
-    //     if (elements[i].hide)
-    //         continue
+    if (switchTabCheckbox.checked)
+        switchPanelTab()
 
-    //     const elXStart = xCoordsToPixels(elements[i].x)
-    //     const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
-    //     const elYStart = xCoordsToPixels(elements[i].y)
-    //     const elYEnd = elYStart + xCoordsToPixels(elements[i].h)
+    if (bumpElementCheckbox.checked)
+        bumpPanelElement()
 
-    //     if (xStartFoDrug > elXStart &&
-    //         xStartFoDrug < elXEnd &&
-    //         yStartFoDrug > elYStart &&
-    //         yStartFoDrug < elYEnd) {
-    //         elements[i].active = true
-    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${elements[i].id}`))
-    //         elements[i].draggable = true
-    //         elements[i].xStatr = elements[i].x
-    //         elements[i].yStatr = elements[i].y
-    //         break
-    //     }
-    // }
+    setSelectedPanelItem()
 
-    // for (let i = 0; i < winds.length; i++) {
-    //     if (winds[i].hide)
-    //         continue
-
-    //     const elXStart = xCoordsToPixels(winds[i].x)
-    //     const elXEnd = elXStart + xCoordsToPixels(winds[i].w)
-    //     const elYStart = xCoordsToPixels(winds[i].y)
-    //     const elYEnd = elYStart + xCoordsToPixels(winds[i].h)
-
-    //     if (xStartFoDrug > elXStart &&
-    //         xStartFoDrug < elXEnd &&
-    //         yStartFoDrug > elYStart &&
-    //         yStartFoDrug < elYEnd) {
-    //         winds[i].active = true
-    //         setSelectedPanelItem(document.querySelector(`#${selectedPanelTab}-${winds[i].id}`))
-    //         winds[i].draggable = true
-    //         winds[i].xStatr = winds[i].x
-    //         winds[i].yStatr = winds[i].y
-    //         break
-    //     }
-    // }
-
-    if (!getSelectedElement() && selectedPanelItem) setSelectedPanelItem(null)
+    if (!activeElement && selectedPanelItem) setSelectedPanelItem(null)
 
     renderAll()
 }
@@ -595,11 +681,11 @@ const dragElement = e => {
 
     const xActualDrug = e.clientX - canvas.offsetTop;
     const yActualDrug = e.clientY - canvas.offsetLeft;
-    const element = getDraggableElement()
+    const element = draggableElement
 
     if (element) {
         let newX = xPixelsToCoords(xActualDrug - xStartFoDrug)
-        let newY = xPixelsToCoords(yActualDrug - yStartFoDrug)
+        let newY = yPixelsToCoords(yActualDrug - yStartFoDrug)
 
         const xMax = canvasWidthInSquares - element.w
         const YMax = canvasHeightInSquares - element.h
@@ -617,7 +703,7 @@ const dragElement = e => {
 }
 
 const dragElementOnKey = e => {
-    let element = getSelectedElement()
+    let element = activeElement
     if (element) {
         let elementLength = element.w > element.h ? 'w' : 'h'
         switch (e.code) {
@@ -661,12 +747,11 @@ const dragElementOnKey = e => {
     renderAll()
 }
 
-const dropDraggableElement = e => {
-    const element = getDraggableElement()
-    if (element) {
-        element.draggable = null
-        delete element.xStatr
-        delete element.yStatr
+const dropDraggableElement = () => {
+    if (draggableElement) {
+        delete draggableElement.xStatr
+        delete draggableElement.yStatr
+        draggableElement = null
     }
 }
 
