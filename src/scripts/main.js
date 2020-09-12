@@ -1,3 +1,4 @@
+
 var canvas = document.querySelector('.game-area__ctx')
 var ctx = canvas.getContext('2d')
 var panelWalls = document.querySelector('.game-panel-walls')
@@ -16,7 +17,7 @@ var selectedPanelTab = null
 var selectedElements = null
 var draggableElement;
 var activeElement;
-localStorage.setItem('level-1', '{"id": 1, "areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
+localStorage.setItem('level-1', '{"id":1,"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
 var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
 var gameObj;
 var areas;
@@ -31,14 +32,14 @@ const gridSettings = {
 /*HELP FUNCTIONS */
 const getAreaById = id => areas.find(el => el.id === id)
 const getWallById = id => walls.find(el => el.id === id)
-const getXPixelRatio = canvas.width / gridSettings.squareWidth
-const getYPixelRatio = canvas.height / gridSettings.squareHeight
+const getXPixelRatio = canvas.width  / gridSettings.squareWidth
+const getYPixelRatio = canvas.height  / gridSettings.squareHeight
 const xCoordsToPixels = coords => coords * getXPixelRatio
 const yCoordsToPixels = coords => coords * getYPixelRatio
 const canvasWidthInSquares = gridSettings.squareWidth
 const canvasHeightInSquares = gridSettings.squareHeight
 const generateElementId = () => selectedElements.length + 1 || 1
-const generateLevelId = () => JSON.parse(localStorage.getItem(`level-${localStorage.length}`)).id + 1
+const generateLevelId = () => localStorage.length + 1
 const getAllLevels = () => Object.keys(localStorage).map(lvl => JSON.parse(localStorage.getItem(lvl)))
 /*END OF HELP FUNCTIONS */
 
@@ -68,7 +69,6 @@ const copyElement = elementId => {
         }
     }
 
-    if (selectedElements === localStorage) {}
     selectedElements.push(element)
     renderAll()
 }
@@ -78,6 +78,25 @@ const deleteElement = elementId => {
     selectedElements.splice(index, 1)
     document.querySelector(`#${selectedPanelTab}-${elementId}`).remove()
     renderAll()
+}
+
+const copyLevel = levelId => {
+    const copiedLevel = JSON.parse(localStorage.getItem('level-' + levelId))
+    const level = { ...copiedLevel, id: generateLevelId() }
+    localStorage.setItem('level-' + level.id, JSON.stringify(level))
+    addLevelToPanel(level)
+}
+
+const deleteLevel = levelId => {
+    if (selectedLevel.id === levelId) return
+    localStorage.removeItem('level-' + levelId)
+    panelLevels.querySelector('#level-' + levelId).remove()
+    loadLevels()
+}
+
+const saveLevelChanges = levelId => {
+    if (selectedLevel.id !== levelId) return
+    localStorage.setItem('level-' + levelId, JSON.stringify(gameObj))
 }
 
 const toggleAreaParams = (areaId, el) => {
@@ -106,7 +125,6 @@ const setSelectedTab = e => {
         selectedPanelTab = 'wind'
     }
     else if (e.id === 'levels') {
-        selectedElements = getAllLevels()
         selectedPanelTab = 'level'
     }
 }
@@ -177,10 +195,32 @@ const setSelectedPanelItem = e => {
         selectedPanelItem.classList.remove('active')
     }
     if (activeElement) {
-        console.log(selectedPanelTab, activeElement)
         selectedPanelItem = document.querySelector(`#${selectedPanelTab}-${activeElement.id}`)
         selectedPanelItem.classList.add('active')
     }
+}
+
+const setSelectedPanelLevel = levelId => {
+    const selectedPanelLevel = panelLevels.querySelector('.game-panel-item.active')
+
+    if (selectedPanelLevel) {
+        selectedPanelLevel.classList.remove('active')
+    }
+
+    document.querySelector(`#level-${levelId}`).classList.add('active')
+
+}
+
+const setSelectedLevel = levelId => {
+    //очистка панелей прежнего уровня
+    [...document.querySelectorAll(`.game-panel-walls__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-areas__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-winds__item`)].forEach(e => e.remove());
+
+    selectedLevel = getAllLevels().find(lvl => lvl.id === levelId);
+
+    setSelectedPanelLevel(levelId)
+    loadLevels()
 }
 
 const removeSelectedItem = () => {
@@ -189,16 +229,11 @@ const removeSelectedItem = () => {
 }
 
 const setSelectedElement = e => {
-    activeElement = selectedElements.find(element => 
+    activeElement = selectedElements.find(element =>
         e.id === `${selectedPanelTab}-${element.id}`
     )
     setSelectedPanelItem(e)
     renderAll()
-}
-
-const setSelectedLevel = e => {
-    selectedLevel = getAllLevels().find(lvl => `level-${lvl.id}` === e.id)
-    loadLevels()
 }
 
 const addWallToPanel = wall => {
@@ -341,15 +376,20 @@ const addLevelToPanel = level => {
     if (document.querySelector(`#level-${level.id}`)) return
     panelLevels.insertAdjacentHTML('beforeend',
         `<div 
-            class="game-panel-levels__item game-panel-item"
+            class="game-panel-levels__item game-panel-item ${selectedLevel.id === level.id ? 'active' : ''}"
             id="level-${level.id}"
-            onmousedown="setSelectedLevel(this)"
         >
             <div>${level.id}</div>
-            <button class="game-panel-item__copy" onClick="copyElement(${level.id})">
+            <button class="game-panel-item__save" onClick="saveLevelChanges(${level.id})">
+                Save
+            </button>
+            <button onmousedown="setSelectedLevel(${level.id})" class="game-panel-item__save">
+                Zagruzit'
+            </button>
+            <button class="game-panel-item__copy" onClick="copyLevel(${level.id})">
                 Copy
             </button>
-            <button class="game-panel-item__delete" onClick="deleteElement(${level.id})">
+            <button class="game-panel-item__delete" onClick="deleteLevel(${level.id})">
                 Delete
             </button>
         </div>`
@@ -437,8 +477,8 @@ const drawWallSides = wall => {
 /*RENDER*/
 const renderGrid = e => {
     ctx.beginPath()
-    const w = canvas.width - 2
-    const h = canvas.height - 2
+    const w = canvas.width 
+    const h = canvas.height 
     const squareWidth = w / gridSettings.squareWidth
     const squareHeight = h / gridSettings.squareHeight
     ctx.strokeStyle = '#bdbdbd'
@@ -451,13 +491,14 @@ const renderGrid = e => {
 
 const loadLevels = () => {
     gameObj = JSON.parse(localStorage.getItem(`level-${selectedLevel.id}`))
+    if (!gameObj) return
     walls = gameObj.walls
     areas = gameObj.areas
     winds = gameObj.winds
 
-    //очистка панелей прежнего левела
+    const levels = getAllLevels().sort((a,b) => a.id - b.id)
 
-    getAllLevels().forEach(lvl => 
+    levels.forEach(lvl =>
         addLevelToPanel(lvl)
     )
 
@@ -495,9 +536,8 @@ const drawElement = element => {
 
 const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
+
     //сохранение каждого изменения
-    localStorage.setItem(`level-${selectedLevel.id}`, JSON.stringify(gameObj))
 
     if (gridCheckbox.checked)
         renderGrid()
@@ -583,10 +623,9 @@ const createWind = () => {
 }
 
 const createLevel = () => {
-    gameObj = {id: generateLevelId(), walls: [], areas: [], winds: []}
-    localStorage.setItem(`level-${gameObj.id}`, JSON.stringify(gameObj))
-    loadLevels()
-    renderAll()
+    newLevel = { id: generateLevelId(), walls: [], areas: [], winds: [] }
+    localStorage.setItem(`level-${newLevel.id}`, JSON.stringify(newLevel))
+    addLevelToPanel(newLevel)
 }
 
 const takeDraggableElement = e => {
@@ -597,7 +636,7 @@ const takeDraggableElement = e => {
 
     let elements = selectedElements
 
-    if (switchTabCheckbox.checked) 
+    if (switchTabCheckbox.checked)
         elements = [...walls, ...areas, ...winds]
 
     if (!elements) return
@@ -614,6 +653,7 @@ const takeDraggableElement = e => {
             yStartFoDrug > elYStart &&
             yStartFoDrug < elYEnd) {
             activeElement = elements[i]
+
             draggableElement = elements[i]
             elements[i].xStatr = elements[i].x
             elements[i].yStatr = elements[i].y
@@ -621,15 +661,17 @@ const takeDraggableElement = e => {
         }
     }
 
-    if (switchTabCheckbox.checked) 
+    if (switchTabCheckbox.checked)
         switchPanelTab()
 
-    if (bumpElementCheckbox.checked) 
+    if (bumpElementCheckbox.checked)
         bumpPanelElement()
 
     setSelectedPanelItem()
 
     if (!activeElement && selectedPanelItem) setSelectedPanelItem(null)
+
+    renderAll()
 }
 
 function xPixelsToCoords(xPx) { return Math.round(xPx / getXPixelRatio) }
