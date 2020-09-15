@@ -5,6 +5,7 @@ var panelWalls = document.querySelector('.game-panel-walls')
 var panelAreas = document.querySelector('.game-panel-areas')
 var panelWinds = document.querySelector('.game-panel-winds')
 var panelLevels = document.querySelector('.game-panel-levels')
+var panelGroups = document.querySelector('.game-panel-groups')
 var gridCheckbox = document.querySelector('input[id=toggleGrid]')
 var hideWallsCheckbox = document.querySelector('input[id=hideWalls]')
 var hideAreasCheckbox = document.querySelector('input[id=hideAreas]')
@@ -17,32 +18,94 @@ var selectedPanelTab = null
 var selectedElements = null
 var draggableElement;
 var activeElement;
-localStorage.setItem('level-1', '{"id":1,"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
-var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
 var gameObj;
 var areas;
 var walls;
 var winds;
+var groups;
 
 const gridSettings = {
     squareWidth: 100,
     squareHeight: 120,
 }
 
+//FIRST LEVEL
+localStorage.setItem('level-1', '{"id":1,"groups":[{"id":1,"x":0,"y":0,"w":0,"h":0,"elements":[]}],"areas":[{"x":25,"y":32,"w":15,"h":15,"id":1,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"active":0},{"x":30,"y":47,"w":5,"h":21,"id":3,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":9,"y":68,"w":21,"h":11,"id":4,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":79,"y":113,"w":11,"h":7,"id":5,"hide":0,"params":{"x":1,"y":0,"coup":0},"active":0,"color":"rgba(100,220,220, 0.3)"},{"x":90,"y":113,"w":10,"h":7,"id":6,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":74,"w":9,"h":29,"id":7,"hide":0,"params":{"x":0,"y":1,"coup":0},"active":0,"color":"rgba(220,220,100, 0.3)"},{"x":91,"y":33,"w":9,"h":20,"id":8,"hide":0,"params":{"x":0,"y":0,"coup":1},"active":0,"color":"rgba(220,70,220, 0.3)"},{"x":91,"y":53,"w":9,"h":21,"id":9,"hide":0,"params":{"x":0,"y":1,"coup":1},"active":0,"color":"rgba(220,70,100, 0.3)"},{"x":2,"y":19,"w":5,"h":5,"id":10,"color":"rgba(100,70,220, 0.3)","params":{"coup":1,"x":1,"y":0},"hide":0,"active":0,"draggable":null}],"walls":[{"x":0,"y":79,"w":30,"h":1,"id":1,"hide":0,"active":0,"bern":[0,0,1,0],"thru":[0,0,0,0]},{"x":10,"y":31,"w":31,"h":1,"id":2,"hide":0,"active":0,"bern":[0,1,0,1],"thru":[0,0,0,0]},{"x":61,"y":103,"w":1,"h":10,"id":3,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[1,1,1,0]},{"x":9,"y":8,"w":1,"h":24,"id":4,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":35,"y":47,"w":1,"h":21,"id":5,"hide":0,"active":0,"bern":[0,1,1,0],"thru":[0,1,1,0]},{"x":9,"y":39,"w":1,"h":28,"id":6,"hide":0,"active":0,"bern":[1,0,0,1],"thru":[0,1,1,0]},{"x":10,"y":39,"w":15,"h":1,"id":7,"hide":0,"active":1,"bern":[0,0,1,1],"thru":[1,0,1,0]},{"x":40,"y":32,"w":1,"h":15,"id":8,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":67,"w":20,"h":1,"id":9,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":24,"y":40,"w":1,"h":7,"id":10,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":95,"y":112,"w":5,"h":1,"id":11,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":47,"w":5,"h":1,"id":12,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":48,"y":67,"w":1,"h":15,"id":13,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":61,"y":95,"w":12,"h":1,"id":14,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":41,"y":90,"w":1,"h":14,"id":15,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":60,"y":82,"w":1,"h":14,"id":16,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":9,"y":112,"w":77,"h":1,"id":17,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":36,"y":67,"w":12,"h":1,"id":18,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":104,"w":52,"h":1,"id":19,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":103,"w":1,"h":9,"id":20,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":49,"y":81,"w":12,"h":1,"id":21,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":80,"w":1,"h":10,"id":22,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":90,"w":12,"h":1,"id":23,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":0,"y":79,"w":30,"h":1,"id":24,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":29,"y":47,"w":1,"h":21,"id":25,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":74,"y":90,"w":9,"h":1,"id":26,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":24,"y":47,"w":5,"h":1,"id":27,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":90,"y":33,"w":1,"h":70,"id":28,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0],"draggable":null},{"x":73,"y":90,"w":1,"h":15,"id":29,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]},{"x":85,"y":102,"w":5,"h":1,"id":30,"hide":0,"active":0,"bern":[0,0,0,0],"thru":[0,0,0,0]}],"winds":[{"x":91,"y":33,"w":9,"h":70,"id":1,"color":"rgba(0,255,255,0.3)","params":{"X":1,"Y":1,"forse":1},"active":0,"draggable":null,"X":0,"Y":-1,"forse":2},{"x":74,"y":91,"w":16,"h":11,"id":2,"params":{"X":0,"Y":0,"forse":0},"color":"rgba(0,255,255,0.3)","active":0,"draggable":null}]}')
+var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
+//END OF FIRST LEVEL
+
 /*HELP FUNCTIONS */
+const getElementById = id => selectedElements.find(el => el.id === id)
 const getAreaById = id => areas.find(el => el.id === id)
 const getWallById = id => walls.find(el => el.id === id)
-const getXPixelRatio = canvas.width  / gridSettings.squareWidth
-const getYPixelRatio = canvas.height  / gridSettings.squareHeight
+const getXPixelRatio = canvas.width / gridSettings.squareWidth
+const getYPixelRatio = canvas.height / gridSettings.squareHeight
 const xCoordsToPixels = coords => coords * getXPixelRatio
 const yCoordsToPixels = coords => coords * getYPixelRatio
 const canvasWidthInSquares = gridSettings.squareWidth
 const canvasHeightInSquares = gridSettings.squareHeight
-const generateElementId = () => selectedElements.length + 1 || 1
-const generateLevelId = () => localStorage.length + 1
+const clearAllPanels = () => {
+    [...document.querySelectorAll(`.game-panel-walls__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-areas__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-winds__item`)].forEach(e => e.remove());
+    [...document.querySelectorAll(`.game-panel-groups__item`)].forEach(e => e.remove())
+}
+const generateElementId = () => {
+    let id = 1
+    while (selectedElements.find(e => e.id === id))
+        id += 1
+    return id
+}
+const generateLevelId = () => {
+    let level = 1
+    while (localStorage.getItem('level-' + level)) {
+        level += 1
+    }
+    return level
+}
 const getAllLevels = () => Object.keys(localStorage).map(lvl => JSON.parse(localStorage.getItem(lvl)))
 /*END OF HELP FUNCTIONS */
 
+const deleteElementOnGroups = elementId => {
+    const element = getElementById(elementId)
+    groups.forEach(g => {
+        const index = g.elements.indexOf(element)
+        if (index >= 0) {
+            g.elements.splice(index, 1)
+        }
+    })
+}
+
+const toggleElementOnGroup = (select, elementId) => {
+    const element = getElementById(elementId)
+    deleteElementOnGroups(elementId)
+    if (select.value !== '') {
+        const selectedGroup = groups.find(g => g.id === +select.value)
+        selectedGroup.elements.push(element)
+    }
+    clearAllPanels()
+    renderAll()
+}
+
+const calcGroupPosition = group => {
+    newX = gridSettings.squareWidth
+    newW = 0
+    newY = gridSettings.squareHeight
+    newH = 0
+
+    group.elements.forEach(e => {
+        newX = Math.min(newX, e.x)
+        newY = Math.min(newY, e.y)
+        newW = Math.max(newW, e.x + e.w)
+        newH = Math.max(newH, e.y + e.h)
+    })
+
+    group.x = newX
+    group.y = newY
+    group.w = newW - newX
+    group.h = newH - newY
+
+}
 
 const hideElement = (e, elementId) => {
     e.classList.toggle('active')
@@ -94,9 +157,22 @@ const deleteLevel = levelId => {
     loadLevels()
 }
 
+const checkLevelChanges = () => {
+    // const status = JSON.stringify(gameObj) === JSON.stringify(localStorage.getItem('level-' + selectedLevel.id))
+    // const levelOnPanel = panelLevels.querySelector('#level-' + selectedLevel.id)
+    // const saveButton = levelOnPanel.querySelector('.game-panel-item__save')
+
+    // panelLevels.querySelector('.game-panel-item__save').classList.remove('active')
+
+    // if (!status) {
+    //     saveButton.classList.add('active')
+    // }
+}
+
 const saveLevelChanges = levelId => {
     if (selectedLevel.id !== levelId) return
     localStorage.setItem('level-' + levelId, JSON.stringify(gameObj))
+    renderAll()
 }
 
 const toggleAreaParams = (areaId, el) => {
@@ -110,7 +186,6 @@ const setSelectedTab = e => {
     if (e.id === 'settings') {
         selectedElements = null
         selectedPanelTab = null
-        return
     }
     else if (e.id === 'walls') {
         selectedElements = walls
@@ -126,6 +201,10 @@ const setSelectedTab = e => {
     }
     else if (e.id === 'levels') {
         selectedPanelTab = 'level'
+    }
+    else if (e.id === 'groups') {
+        selectedElements = groups
+        selectedPanelTab = 'group'
     }
 }
 
@@ -212,14 +291,9 @@ const setSelectedPanelLevel = levelId => {
 }
 
 const setSelectedLevel = levelId => {
-    //очистка панелей прежнего уровня
-    [...document.querySelectorAll(`.game-panel-walls__item`)].forEach(e => e.remove());
-    [...document.querySelectorAll(`.game-panel-areas__item`)].forEach(e => e.remove());
-    [...document.querySelectorAll(`.game-panel-winds__item`)].forEach(e => e.remove());
-
+    setSelectedPanelLevel(levelId);
+    clearAllPanels()
     selectedLevel = getAllLevels().find(lvl => lvl.id === levelId);
-
-    setSelectedPanelLevel(levelId)
     loadLevels()
 }
 
@@ -255,6 +329,15 @@ const addWallToPanel = wall => {
             <input oninput="elementChange(this)" name="w" value="${wall.w}">
             <span>height:</span>
             <input oninput="elementChange(this)" name="h" value="${wall.h}">
+        </div>
+        <div class="game-item-panel__params">
+            <span>Group:</span>
+            <select name="group-select" onChange="toggleElementOnGroup(this, ${wall.id})">
+            <option></option>
+                ${groups.map(g =>
+            `<option ${g.elements.includes(wall) ? 'selected' : ''}>${g.id}</option>`)
+        }
+            </select>
         </div>
         <button class="game-panel-item__copy" onClick="copyElement(${wall.id})">Copy</button>
         <button class="game-panel-item__bern">
@@ -321,6 +404,13 @@ const addAreaToPanel = area => {
              ">
                 Coup
             </button>
+            <span>Group:</span>
+            <select name="group-select" onChange="toggleElementOnGroup(this, ${area.id})">
+            <option></option>
+                ${groups.map(g =>
+            `<option ${g.elements.includes(area) ? 'selected' : ''}>${g.id}</option>`)
+        }
+            </select>
         </div>
         <button class="game-panel-item__copy" onClick="copyElement(${area.id})">Copy</button>
         <button class="game-panel-item__hide" onClick="hideElement(this, ${area.id})">
@@ -360,6 +450,13 @@ const addWindToPanel = wind => {
             <input oninput="elementChange(this)" name="Y" value="${wind.params.Y}">
             <span>Forse:</span>
             <input oninput="elementChange(this)" name="forse" value="${wind.params.forse}">
+            <span>Group:</span>
+            <select name="group-select" onChange="toggleElementOnGroup(this, ${wind.id})">
+            <option></option>
+                ${groups.map(g =>
+            `<option ${g.elements.includes(wind) ? 'selected' : ''}>${g.id}</option>`)
+        }
+            </select>
         </div>
         <button class="game-panel-item__copy" onClick="copyElement(${wind.id})">Copy</button>
         <button class="game-panel-item__hide" onClick="hideElement(this, ${wind.id})">
@@ -390,6 +487,25 @@ const addLevelToPanel = level => {
                 Copy
             </button>
             <button class="game-panel-item__delete" onClick="deleteLevel(${level.id})">
+                Delete
+            </button>
+        </div>`
+    )
+}
+
+const addGroupToPanel = group => {
+    if (document.querySelector(`#group-${group.id}`)) return
+    panelGroups.insertAdjacentHTML('beforeend',
+        `<div 
+            class="game-panel-groups__item game-panel-item"
+            id="group-${group.id}"
+            onmousedown="setSelectedElement(this)"
+        >
+            <input name="id" value="${group.id}">
+            <button class="game-panel-item__group ${group.toggle ? 'active' : ''}">
+                Toggle group
+            </button>
+            <button class="game-panel-item__delete">
                 Delete
             </button>
         </div>`
@@ -475,10 +591,10 @@ const drawWallSides = wall => {
 }
 
 /*RENDER*/
-const renderGrid = e => {
+const renderGrid = () => {
     ctx.beginPath()
-    const w = canvas.width 
-    const h = canvas.height 
+    const w = canvas.width
+    const h = canvas.height
     const squareWidth = w / gridSettings.squareWidth
     const squareHeight = h / gridSettings.squareHeight
     ctx.strokeStyle = '#bdbdbd'
@@ -495,8 +611,9 @@ const loadLevels = () => {
     walls = gameObj.walls
     areas = gameObj.areas
     winds = gameObj.winds
+    groups = gameObj.groups
 
-    const levels = getAllLevels().sort((a,b) => a.id - b.id)
+    const levels = getAllLevels().sort((a, b) => a.id - b.id)
 
     levels.forEach(lvl =>
         addLevelToPanel(lvl)
@@ -538,7 +655,6 @@ const renderAll = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     //сохранение каждого изменения
-
     if (gridCheckbox.checked)
         renderGrid()
 
@@ -566,6 +682,24 @@ const renderAll = () => {
         }
         )
     }
+
+    groups.forEach(g => {
+        addGroupToPanel(g)
+        calcGroupPosition(g)
+        if (g === activeElement) {
+            ctx.rect(
+                xCoordsToPixels(g.x),
+                yCoordsToPixels(g.y),
+                xCoordsToPixels(g.w),
+                yCoordsToPixels(g.h)
+            )
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 3
+            ctx.stroke();
+        }
+    })
+
+    checkLevelChanges()
 }
 
 loadLevels()
@@ -575,6 +709,7 @@ renderAll()
 /* LISTENERS */
 
 const elementChange = e => {
+    console.log(activeElement)
     const element = activeElement
     element[e.name] = +e.value
     renderAll()
@@ -622,8 +757,18 @@ const createWind = () => {
     renderAll()
 }
 
+const createGroup = () => {
+    const group = {
+        id: generateElementId(),
+        elements: []
+    };
+    clearAllPanels()
+    selectedElements.push(group)
+    renderAll()
+}
+
 const createLevel = () => {
-    newLevel = { id: generateLevelId(), walls: [], areas: [], winds: [] }
+    newLevel = { id: generateLevelId(), walls: [], areas: [], winds: [], groups: [] }
     localStorage.setItem(`level-${newLevel.id}`, JSON.stringify(newLevel))
     addLevelToPanel(newLevel)
 }
@@ -640,10 +785,10 @@ const takeDraggableElement = e => {
         elements = [...walls, ...areas, ...winds]
 
     if (!elements) return
+
     for (let i = 0; i < elements.length; i++) {
         if (elements[i].hide)
             continue
-
         const elXStart = xCoordsToPixels(elements[i].x) - window.pageXOffset
         const elXEnd = elXStart + xCoordsToPixels(elements[i].w)
         const elYStart = yCoordsToPixels(elements[i].y) - window.pageYOffset
@@ -652,9 +797,17 @@ const takeDraggableElement = e => {
             xStartFoDrug < elXEnd &&
             yStartFoDrug > elYStart &&
             yStartFoDrug < elYEnd) {
+            if (elements[i].elements) {
+                draggableElement = elements[i].elements
+                activeElement = elements[i]
+                elements[i].elements.forEach(e => {
+                    e.xStatr = e.x
+                    e.yStatr = e.y
+                })
+                break
+            }
             activeElement = elements[i]
-
-            draggableElement = elements[i]
+            draggableElement = [elements[i]]
             elements[i].xStatr = elements[i].x
             elements[i].yStatr = elements[i].y
             break
@@ -681,25 +834,27 @@ const dragElement = e => {
 
     const xActualDrug = e.clientX - canvas.offsetTop;
     const yActualDrug = e.clientY - canvas.offsetLeft;
-    const element = draggableElement
 
-    if (element) {
-        let newX = xPixelsToCoords(xActualDrug - xStartFoDrug)
-        let newY = yPixelsToCoords(yActualDrug - yStartFoDrug)
+    if (draggableElement) {
+        console.log(draggableElement)
+        draggableElement.forEach(element => {
+            let newX = xPixelsToCoords(xActualDrug - xStartFoDrug)
+            let newY = yPixelsToCoords(yActualDrug - yStartFoDrug)
 
-        const xMax = canvasWidthInSquares - element.w
-        const YMax = canvasHeightInSquares - element.h
-        const xMin = 0
-        const YMin = 0
+            const xMax = canvasWidthInSquares - element.w
+            const YMax = canvasHeightInSquares - element.h
+            const xMin = 0
+            const YMin = 0
 
-        element.x = Math.min(element.xStatr + newX, xMax)
-        element.y = Math.min(element.yStatr + newY, YMax)
+            element.x = Math.min(element.xStatr + newX, xMax)
+            element.y = Math.min(element.yStatr + newY, YMax)
 
-        element.x = Math.max(element.x, xMin)
-        element.y = Math.max(element.y, YMin)
-
+            element.x = Math.max(element.x, xMin)
+            element.y = Math.max(element.y, YMin)
+        })
         renderAll()
     }
+
 }
 
 const dragElementOnKey = e => {

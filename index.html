@@ -23,34 +23,36 @@
           <label for="areas" class="game-panel-tabs__label">Areas</label>
           <input type="radio" name="tabs" id="winds" onClick="setSelectedTab(this)">
           <label for="winds" class="game-panel-tabs__label">Wind</label>
+          <input type="radio" name="tabs" id="groups" onClick="setSelectedTab(this)">
+          <label for="groups" class="game-panel-tabs__label">Groups</label>
           <input type="radio" name="tabs" id="levels" onClick="setSelectedTab(this)">
           <label for="levels" class="game-panel-tabs__label">Levels</label>
         <section class="game-panel__settings game-panel-settings">
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="toggleGrid">Enable grid</label>
             <input id="toggleGrid" type="checkbox" onClick="renderAll()" checked>
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="showAllElements">Show all hide elements</label>
             <input id="showAllElements" type="checkbox" onClick="renderAll()">
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="hideWalls">Hide walls</label>
             <input id="hideWalls" type="checkbox" id="walls" onClick="renderAll()">
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="hideAreas">Hide areas</label>
             <input id="hideAreas" type="checkbox" id="areas" onClick="renderAll()">
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="hideWinds">Hide winds</label>
             <input id="hideWinds" type="checkbox" id="winds" onClick="renderAll()">
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="bumpElement">Bump element</label>
             <input id="bumpElement" type="checkbox" id="winds" onClick="renderAll()">
           </div>
-          <div class="game-panel-item">
+          <div class="game-panel-settings__item">
             <label for="switchTab">Switch tab</label>
             <input id="switchTab" type="checkbox" id="winds" onClick="renderAll()">
           </div>
@@ -73,6 +75,11 @@
         <section class="game-panel__levels game-panel-levels">
           <button class="game-panel-item__newLevel" onClick="createLevel()">
             Добавить level
+          </button>
+        </section>
+        <section class="game-panel__groups game-panel-groups">
+          <button class="game-panel-item__newLevel" onClick="createGroup()">
+            Добавить группу
           </button>
         </section>
       </div>
