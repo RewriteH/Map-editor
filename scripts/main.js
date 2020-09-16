@@ -87,16 +87,15 @@ const rewriteStorage = () => {
 const importLevel = () => {
     let level = document.querySelector('.game-panel-item-import__text-area').value
 
-    if (typeof level === 'object') {
-        level = JSON.stringify(level)
-    }
-
     let status = JSON.parse(level)
+
+    if (typeof status !== 'object' || !status.id) return
 
     if (localStorage.getItem('level-' + status.id)) {
         document.querySelector('.game-panel-item-import__rewrite').classList.add('active')
         return
     }
+
     localStorage.setItem('level-' + status.id, level)
     addLevelToPanel(JSON.parse(level))
 }
@@ -667,7 +666,7 @@ const loadLevels = () => {
     winds = gameObj.winds
     groups = gameObj.groups
 
-    const levels = getAllLevels().sort((a, b) => a.id - b.id)
+    const levels = getAllLevels().sort((a, b) => a.id - b.id).filter(lvl => lvl.id)
 
     levels.forEach(lvl =>
         addLevelToPanel(lvl)
