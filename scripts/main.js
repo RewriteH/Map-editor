@@ -523,7 +523,8 @@ const addLevelToPanel = level => {
             class="game-panel-levels__item game-panel-item ${selectedLevel.id === level.id ? 'active' : ''}"
             id="level-${level.id}"
         >
-            <input name="name" value=${selectedLevel.id === level.id ? level.name : 'readonly'} oninput="levelChange(this)"}>
+            ${level.id === selectedLevel.id ? `<input name="name" value=${level.name} oninput="levelChange(this)"}>` :
+            `<input name="name" readonly value=${level.name} oninput="levelChange(this)"}>`}
             <button class="game-panel-item__save" onClick="saveLevelChanges(${level.id})">
                 Save
             </button>
@@ -666,7 +667,7 @@ const loadLevels = () => {
     winds = gameObj.winds
     groups = gameObj.groups
 
-    const levels = getAllLevels().sort((a, b) => a.id - b.id).filter(lvl => lvl.id)
+    const levels = getAllLevels()
 
     levels.forEach(lvl =>
         addLevelToPanel(lvl)
