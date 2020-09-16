@@ -86,11 +86,16 @@
             </div>
           </div>
           <div class="game-panel-item-import">
-            <button class="game-panel-item__import" onClick="openImportPop()">
+            <button class="game-panel-item__import" onClick="toggleImportPop()">
               Импортнуть level
             </button>
             <div class="game-panel-item-import__area">
               <textarea class="game-panel-item-import__text-area"></textarea>
+              <div class="game-panel-item-import__rewrite">
+                Перезаписать?
+                <button onClick="rewriteStorage()">Да</button>
+                <button class="active" onClick="toggleImportPop()">Нет</button>
+              </div>
               <button onClick="importLevel()">Загрузить</button>
             </div>
           </div>
@@ -105,5 +110,4 @@
   </div>
 </body>
 <script src="scripts/main.js"></script>
-
 </html>

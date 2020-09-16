@@ -76,18 +76,40 @@ const deleteElementOnGroups = elementId => {
     })
 }
 
-const openImportPop = () => {
+const toggleImportPop = () => {
+    document.querySelector('.game-panel-item-import__rewrite').classList.remove('active')
     document.querySelector('.game-panel-item-import__area').classList.toggle('active')
 }
 
-const openExportAllPop = () => {
+const toggleExportAllPop = () => {
     document.querySelector('.game-panel-item-export__area').classList.toggle('active')
+}
+
+const rewriteStorage = () => {
+    let level = document.querySelector('.game-panel-item-import__text-area').value
+    console.log(level)
+    localStorage.setItem('level-' + JSON.parse(level).id, level)
+    document.querySelector('.game-panel-item-import__rewrite').classList.remove('active')
 }
 
 const importLevel = () => {
     let level = document.querySelector('.game-panel-item-import__text-area').value
+    
+
+    console.log(JSON.parse(level))
+
+
     if (typeof level === 'object') {
         level = JSON.stringify(level)
+    }
+
+    let status = JSON.parse(level)
+
+    console.log(status)
+
+    if (localStorage.getItem('level-' + status.id)) {
+        document.querySelector('.game-panel-item-import__rewrite').classList.add('active')
+        return
     }
     localStorage.setItem('level-' + generateLevelId(), level)
     addLevelToPanel(JSON.parse(level))
@@ -99,7 +121,7 @@ const exportLevels = () => {
     const a = document.createElement('a');
     const file = new Blob([levels], {type: 'text/plain'});
     a.href = URL.createObjectURL(file);
-    a.download = fileName || 'levels.txt';
+    a.download = fileName + '.txt' || 'levels.txt';
     a.click();
     URL.revokeObjectURL(a.href);
     a.remove()
