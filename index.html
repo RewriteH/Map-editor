@@ -76,6 +76,24 @@
           <button class="game-panel-item__newLevel" onClick="createLevel()">
             Добавить level
           </button>
+          <div class="game-panel-item-export">
+            <button class="game-panel-item__export" onClick="openExportAllPop()">
+              Экспортнуть levelы
+            </button>
+            <div class="game-panel-item-export__area">
+              <input class="game-panel-item-export__fileName">
+              <button onClick="exportLevels()">Экспортнуть</button>
+            </div>
+          </div>
+          <div class="game-panel-item-import">
+            <button class="game-panel-item__import" onClick="openImportPop()">
+              Импортнуть level
+            </button>
+            <div class="game-panel-item-import__area">
+              <textarea class="game-panel-item-import__text-area"></textarea>
+              <button onClick="importLevel()">Загрузить</button>
+            </div>
+          </div>
         </section>
         <section class="game-panel__groups game-panel-groups">
           <button class="game-panel-item__newLevel" onClick="createGroup()">

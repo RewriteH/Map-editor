@@ -76,6 +76,46 @@ const deleteElementOnGroups = elementId => {
     })
 }
 
+const openImportPop = () => {
+    document.querySelector('.game-panel-item-import__area').classList.toggle('active')
+}
+
+const openExportAllPop = () => {
+    document.querySelector('.game-panel-item-export__area').classList.toggle('active')
+}
+
+const importLevel = () => {
+    let level = document.querySelector('.game-panel-item-import__text-area').value
+    if (typeof level === 'object') {
+        level = JSON.stringify(level)
+    }
+    localStorage.setItem('level-' + generateLevelId(), level)
+    addLevelToPanel(JSON.parse(level))
+}
+
+const exportLevels = () => {
+    const fileName = document.querySelector('.game-panel-item-export__fileName').value
+    const levels = JSON.stringify(getAllLevels())
+    const a = document.createElement('a');
+    const file = new Blob([levels], {type: 'text/plain'});
+    a.href = URL.createObjectURL(file);
+    a.download = fileName || 'levels.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    a.remove()
+}
+
+const exportLevel = (levelId) => {
+    const level = localStorage.getItem('level-' + levelId)
+    const a = document.createElement('a');
+    const file = new Blob([level], {type: 'text/plain'});
+    a.href = URL.createObjectURL(file);
+    a.download = 'level-' + levelId + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    a.remove()
+}
+
 const toggleElementOnGroup = (select, elementId) => {
     const element = getElementById(elementId)
     deleteElementOnGroups(elementId)
@@ -488,6 +528,9 @@ const addLevelToPanel = level => {
             </button>
             <button class="game-panel-item__delete" onClick="deleteLevel(${level.id})">
                 Delete
+            </button>
+            <button class="game-panel-item__export" onClick="exportLevel(${level.id})">
+                Export 
             </button>
         </div>`
     )
