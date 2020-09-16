@@ -180,12 +180,12 @@ const copyElement = elementId => {
 
     const copiedElement = selectedElements.filter(element => element.id === elementId)
     let element;
-    if (selectedElements === walls) {
-        element = {
-            ...copiedElement[0],
-            id: generateElementId()
-        }
+
+    element = {
+        ...copiedElement[0],
+        id: generateElementId()
     }
+
     if (selectedElements === winds || selectedElements === areas) {
         element = {
             ...copiedElement[0],
@@ -570,7 +570,10 @@ const addGroupToPanel = group => {
             <button class="game-panel-item__group ${group.toggle ? 'active' : ''}">
                 Toggle group
             </button>
-            <button class="game-panel-item__delete">
+            <button class="game-panel-item__copy" onClick="copyElement(${group.id})">
+                Copy
+            </button>
+            <button class="game-panel-item__delete" onClick="deleteElement(${group.id})">
                 Delete
             </button>
         </div>`
@@ -863,13 +866,14 @@ const takeDraggableElement = e => {
             yStartFoDrug > elYStart &&
             yStartFoDrug < elYEnd) {
             if (elements[i].elements) {
+                console.log(elements[i])
                 draggableElement = elements[i].elements
                 activeElement = elements[i]
                 elements[i].elements.forEach(e => {
                     e.xStatr = e.x
                     e.yStatr = e.y
                 })
-                break
+            break
             }
             activeElement = elements[i]
             draggableElement = [elements[i]]
@@ -901,7 +905,6 @@ const dragElement = e => {
     const yActualDrug = e.clientY - canvas.offsetLeft;
 
     if (draggableElement) {
-        console.log(draggableElement)
         draggableElement.forEach(element => {
             let newX = xPixelsToCoords(xActualDrug - xStartFoDrug)
             let newY = yPixelsToCoords(yActualDrug - yStartFoDrug)
