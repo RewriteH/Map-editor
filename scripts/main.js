@@ -38,6 +38,7 @@ var selectedLevel = JSON.parse(localStorage.getItem('level-1'))
 const getElementById = id => selectedElements.find(el => el.id === id)
 const getAreaById = id => areas.find(el => el.id === id)
 const getWallById = id => walls.find(el => el.id === id)
+const getWindById = id => winds.find(el => el.id === id)
 const getXPixelRatio = canvas.width / gridSettings.squareWidth
 const getYPixelRatio = canvas.height / gridSettings.squareHeight
 const xCoordsToPixels = coords => coords * getXPixelRatio
@@ -73,6 +74,22 @@ const deleteElementOnGroups = elementId => {
     })
 }
 
+const dialGroupElements = group => {
+    group.elements.forEach((el, index, array) => {
+        if (el.params) {
+            if ('forse' in el.params) {
+                array[index] = getWindById(el.id)
+            }
+            else if ('coup' in el.params) {
+                array[index] = getAreaById(el.id)
+            }
+        }
+        else {
+            array[index] = getWallById(el.id)
+        }
+    })
+}
+
 const toggleImportPop = () => {
     document.querySelector('.game-panel-item-import__rewrite').classList.remove('active')
     document.querySelector('.game-panel-item-import__area').classList.toggle('active')
@@ -103,7 +120,7 @@ const importLevel = () => {
 const exportLevels = () => {
     const levels = JSON.stringify(getAllLevels())
     const a = document.createElement('a');
-    const file = new Blob([levels], {type: 'text/plain'});
+    const file = new Blob([levels], { type: 'text/plain' });
     a.href = URL.createObjectURL(file);
     a.download = 'levels.txt';
     a.click();
@@ -114,7 +131,7 @@ const exportLevels = () => {
 const exportLevel = levelId => {
     const level = localStorage.getItem('level-' + levelId)
     const a = document.createElement('a');
-    const file = new Blob([level], {type: 'text/plain'});
+    const file = new Blob([level], { type: 'text/plain' });
     a.href = URL.createObjectURL(file);
     a.download = 'level-' + levelId + '.txt';
     a.click();
@@ -178,6 +195,7 @@ const copyElement = elementId => {
         }
     }
 
+
     selectedElements.push(element)
     renderAll()
 }
@@ -186,6 +204,29 @@ const deleteElement = elementId => {
     const index = selectedElements.findIndex(element => element.id === elementId)
     selectedElements.splice(index, 1)
     document.querySelector(`#${selectedPanelTab}-${elementId}`).remove()
+    renderAll()
+}
+
+const deleteGroup = groupId => {
+    const index = selectedElements.findIndex(element => element.id === groupId)
+    let elIndex, array
+    selectedElements[index].elements.forEach(el => {
+        if (walls.includes(el)) {
+            elIndex = walls.indexOf(el)
+            array = walls
+        }
+        if (areas.includes(el)) {
+            elIndex = areas.indexOf(el)
+            array = areas
+        }
+        if (winds.includes(el)) {
+            elIndex = winds.indexOf(el)
+            array = winds
+        }
+        array.splice(elIndex, 1)
+    })
+    groups.splice(index, 1)
+    document.querySelector(`#group-${groupId}`).remove()
     renderAll()
 }
 
@@ -248,6 +289,7 @@ const setSelectedTab = e => {
     }
     else if (e.id === 'levels') {
         selectedPanelTab = 'level'
+        selectedElements = null
     }
     else if (e.id === 'groups') {
         selectedElements = groups
@@ -559,7 +601,7 @@ const addGroupToPanel = group => {
             <button class="game-panel-item__copy" onClick="copyElement(${group.id})">
                 Copy
             </button>
-            <button class="game-panel-item__delete" onClick="deleteElement(${group.id})">
+            <button class="game-panel-item__delete" onClick="deleteGroup(${group.id})">
                 Delete
             </button>
         </div>`
@@ -666,6 +708,8 @@ const loadLevels = () => {
     areas = gameObj.areas
     winds = gameObj.winds
     groups = gameObj.groups
+
+    groups.forEach(g => dialGroupElements(g))
 
     const levels = getAllLevels()
 
@@ -854,14 +898,13 @@ const takeDraggableElement = e => {
             yStartFoDrug > elYStart &&
             yStartFoDrug < elYEnd) {
             if (elements[i].elements) {
-                console.log(elements[i])
                 draggableElement = elements[i].elements
                 activeElement = elements[i]
                 elements[i].elements.forEach(e => {
                     e.xStatr = e.x
                     e.yStatr = e.y
                 })
-            break
+                break
             }
             activeElement = elements[i]
             draggableElement = [elements[i]]
@@ -960,8 +1003,10 @@ const dragElementOnKey = e => {
 
 const dropDraggableElement = () => {
     if (draggableElement) {
-        delete draggableElement.xStatr
-        delete draggableElement.yStatr
+        draggableElement.forEach(el => {
+            delete el.xStatr
+            delete el.yStatr
+        })
         draggableElement = null
     }
 }
