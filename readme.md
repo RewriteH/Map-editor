@@ -1,1 +1,1 @@
-[Gh pages](https://rewriteh.github.io/Map-editor/)
+[Gh pages](https://mbreti.github.io/Map-editor/)
