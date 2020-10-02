@@ -77,7 +77,7 @@ button {
   padding: 5px;
   border: 1px solid; }
   .game-panel-item.active {
-    border-color: red; }
+    border: 3px solid red; }
   .game-panel-item input {
     max-height: 15px;
     margin-left: 5px;
